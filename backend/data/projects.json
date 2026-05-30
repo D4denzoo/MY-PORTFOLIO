@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "TaskFlow Pro",
+    "description": "A real-time project management platform with Kanban boards, team collaboration, time tracking, and automated reporting. Handles 10k+ concurrent users.",
+    "long_description": "Built a full-featured project management tool from the ground up. Features include drag-and-drop Kanban boards, real-time updates via WebSockets, role-based access control, Gantt charts, and a powerful reporting dashboard.",
+    "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&q=80",
+    "tags": ["React", "Node.js", "Socket.io", "PostgreSQL", "Redis"],
+    "category": "Full Stack",
+    "github_url": "https://github.com",
+    "live_url": "https://example.com",
+    "featured": true,
+    "year": 2024
+  },
+  {
+    "id": 2,
+    "title": "ShopSphere",
+    "description": "Modern e-commerce platform with AI-powered recommendations, Stripe payments, inventory management, and an analytics dashboard.",
+    "long_description": "End-to-end e-commerce solution with a custom CMS, product search with Elasticsearch, ML-based recommendation engine, and a mobile-first design that increased conversion rates by 32%.",
+    "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",
+    "tags": ["Next.js", "TypeScript", "Stripe", "MongoDB", "Docker"],
+    "category": "Full Stack",
+    "github_url": "https://github.com",
+    "live_url": "https://example.com",
+    "featured": true,
+    "year": 2025
+  },
+ 
+  {
+    "id": 3,
+    "title": "DevBlog CMS",
+    "description": "A headless CMS and blog platform for developers with Markdown support, code highlighting, SEO tools, and multi-author management.",
+    "long_description": "Feature-rich blogging platform designed specifically for developers. Includes a rich Markdown editor with live preview, syntax highlighting for 50+ languages, SEO meta management, RSS feeds, and newsletter integration.",
+    "image": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&q=80",
+    "tags": ["Next.js", "MDX", "Prisma", "PostgreSQL", "Vercel"],
+    "category": "Full Stack",
+    "github_url": "https://github.com",
+    "live_url": "https://example.com",
+    "featured": false,
+    "year": 2026
+  },
+  {
+    "id": 4,
+    "title": "FinTrack API",
+    "description": "Robust RESTful API for personal finance tracking with budgeting, expense categorisation, recurring transactions, and financial reporting.",
+    "long_description": "A production-ready financial tracking API with JWT authentication, bank-level data encryption, recurring transaction automation, multi-currency support, and PDF report generation. Documented with OpenAPI/Swagger.",
+    "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80",
+    "tags": ["Node.js", "Express", "JWT", "PostgreSQL", "Swagger"],
+    "category": "Backend",
+    "github_url": "https://github.com",
+    "live_url": "https://example.com",
+    "featured": false,
+    "year": 2026
+  },
+  {
+    "id": 5,
+    "title": "ChatNest",
+    "description": "Real-time messaging app with rooms, direct messages, file sharing, and read receipts. Supports 1000+ concurrent connections.",
+    "long_description": "A Slack-inspired messaging platform featuring real-time messaging via Socket.io, message threading, emoji reactions, file and image uploads to S3, end-to-end encrypted DMs, and presence indicators.",
+    "image": "https://images.unsplash.com/photo-1611606063065-ee7946f0787a?w=600&q=80",
+    "tags": ["React", "Socket.io", "Node.js", "MongoDB", "AWS S3"],
+    "category": "Full Stack",
+    "github_url": "https://github.com",
+    "live_url": "https://example.com",
+    "featured": false,
+    "year": 2025
+  }
+]

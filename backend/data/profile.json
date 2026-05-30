@@ -1,0 +1,79 @@
+{
+  "name": "Denzel Osward",
+  "title": "Student Developer",
+  "tagline": "Building elegant solutions to complex problems",
+  "bio": "I'm a passionate student developer  crafting scalable web applications. I thrive at the intersection of clean code and beautiful user interfaces — turning ambitious ideas into polished digital products.",
+  "location": "Dar es Salaam, Tanzania",
+  "email": "denzelosward109@gmail.com",
+  "phone": "+255 756 227 279",
+  "avatar": "https://api.dicebear.com/8.x/avataaars/svg?seed=DenzelOsward&backgroundColor=b6e3f4",
+  "cv_url": "#",
+  "social": {
+    "github": "https://github.com/D4denzoo/D4denzoo.github.io",
+    "linkedin": "https://linkedin.com",
+    "twitter": "https://twitter.com",
+    "instagram": "https://www.instagram.com/_.d4_denzoo_?igsh=ZTVnbDlqdms4NDNr&utm_source=qr"
+    
+  },
+  "stats": {
+    "projects_completed": 3,
+    "years_experience": 1,
+    "happy_clients": 0,
+    "cups_of_coffee": 21
+  },
+  "skills": [
+   
+    {
+      "category": "Backend",
+      "icon": "server",
+      "items": [
+        { "name": "Node.js", "level": 88 },
+        { "name": "Express.js", "level": 85 },
+        { "name": "Python / FastAPI", "level": 75 },
+        { "name": "PostgreSQL", "level": 80 },
+        { "name": "MongoDB", "level": 78 }
+      ]
+    },
+    {
+      "category": "DevOps & Tools",
+      "icon": "tool",
+      "items": [
+        { "name": "Docker", "level": 72 },
+        { "name": "AWS / Vercel", "level": 78 },
+        { "name": "Git & GitHub", "level": 95 },
+        { "name": "CI/CD Pipelines", "level": 70 },
+        { "name": "Linux / Bash", "level": 75 }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Sc. Data Science",
+      "institution": "Eastern African statistical training centre, Dar es Salaam",
+      "period": "2023 – present"
+    
+  
+    },
+    { 
+      "degree": "High School Education",
+      "institution": "Tunduru High School, Ruvuma",
+      "period": "2021 – 2023",
+      "description": "Graduated with a focus on science subjects, laying the foundation for my passion in technology and development."
+    }
+  ],
+ 
+  "experience": [
+    {
+      "position": "Student Developer",
+      "company": "Eastern Africa Statistical Training Centre",
+      "period": "2023 – Present",
+      "description": "Contributing to web development projects, collaborating with cross-functional teams, and gaining hands-on experience in building scalable applications."
+    }
+  ]
+}
+  
+
+
+
+  
+
