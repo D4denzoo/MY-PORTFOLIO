@@ -295,7 +295,7 @@ function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name    = document.getElementById('cf-name').value.trim();
@@ -303,6 +303,9 @@ function initContactForm() {
     const subject = document.getElementById('cf-subject').value.trim();
     const message = document.getElementById('cf-message').value.trim();
     const feedback = document.getElementById('form-feedback');
+    const submitBtn = document.getElementById('form-submit');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
 
     if (!name || !email || !subject || !message) {
       showFeedback(feedback, 'error', 'Please fill in all fields.');
@@ -313,18 +316,47 @@ function initContactForm() {
       return;
     }
 
-    const gmail = new URL('https://mail.google.com/mail/');
-    gmail.searchParams.set('view', 'cm');
-    gmail.searchParams.set('fs', '1');
-    gmail.searchParams.set('to', 'denzelosward109@gmail.com');
-    gmail.searchParams.set('su', subject);
-    gmail.searchParams.set('body', `Name: ${name}\nEmail: ${email}\n\n${message}`);
+    const api = String(window.PORTFOLIO_API || '').trim().replace(/\/$/, '');
+    if (!api) {
+      showFeedback(feedback, 'error', 'The contact service is not configured. Please try again later.');
+      return;
+    }
 
-    const opened = window.open(gmail.href, '_blank', 'noopener,noreferrer');
-    if (!opened) window.location.href = gmail.href;
+    submitBtn.disabled = true;
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline-flex';
 
-    showFeedback(feedback, 'success', 'Gmail opened with your message. Press Send and it will arrive at denzelosward109@gmail.com.');
-    form.reset();
+    try {
+      const res = await fetch(`${api}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ name, email, subject, message })
+      });
+
+      let data = {};
+      try {
+        data = await res.json();
+      } catch (parseError) {
+        data = {};
+      }
+
+      if (!res.ok || data.success === false) {
+        showFeedback(feedback, 'error', 'Unable to send your message right now. Please try again later.');
+        return;
+      }
+
+      showFeedback(feedback, 'success', 'Your message has been sent successfully.');
+      form.reset();
+    } catch (err) {
+      showFeedback(feedback, 'error', 'Unable to send your message right now. Please try again later.');
+    } finally {
+      submitBtn.disabled = false;
+      btnText.style.display = 'inline-flex';
+      btnLoading.style.display = 'none';
+    }
   });
 }
 
