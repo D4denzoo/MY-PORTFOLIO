@@ -112,7 +112,7 @@ function publicEmailError(err) {
     return 'Gmail rejected the mailbox password. Recreate the App Password for denzelosward109@gmail.com and update EMAIL_PASS on Render.';
   }
   if (/only send testing emails to your own email/i.test(text)) {
-    return 'Resend is still in test mode, so it can only deliver to the email address on the Resend account. In Resend, open the account email and set CONTACT_TO on Render to that exact address. To deliver to any inbox, verify a domain at resend.com/domains and set CONTACT_FROM to an address on that domain.';
+    return 'Unable to deliver your message right now. Please try again later, or use the Email me button.';
   }
   if (/api key is invalid|invalid api key|missing api key/i.test(text)) {
     return 'Resend rejected the API key. Create a sending key in the Resend dashboard and update RESEND_API_KEY on Render.';
@@ -120,7 +120,7 @@ function publicEmailError(err) {
   if (/domain is not verified|verify a domain|from address|sender/i.test(text)) {
     return 'Resend rejected the sender address. Remove CONTACT_FROM until a domain is verified, then set it to an address on that domain.';
   }
-  return 'Unable to deliver your message right now. Please try again later.';
+  return 'Unable to deliver your message right now. Please try again later, or use the Email me button.';
 }
 
 async function sendWithGmail(payload) {

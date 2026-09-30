@@ -351,7 +351,7 @@ function initContactForm() {
       }
 
       if (!res.ok || data.success === false) {
-        showFeedback(feedback, 'error', data.message || 'Unable to deliver your message right now. Please try again later.');
+        showFeedback(feedback, 'error', data.message || 'Unable to deliver your message right now. Please try again later, or use the Email me button.');
         return;
       }
 
