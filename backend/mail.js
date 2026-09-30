@@ -31,13 +31,19 @@ function resendCredentials() {
   };
 }
 
+function selectedProvider() {
+  const provider = envValue('EMAIL_PROVIDER').toLowerCase();
+  if (provider === 'resend' || provider === 'gmail') return provider;
+  return 'none';
+}
+
 function emailStatus() {
   const gmail = gmailCredentials();
   const resend = resendCredentials();
   return {
+    provider: selectedProvider(),
     gmailConfigured: gmail.configured,
-    resendConfigured: resend.configured,
-    provider: gmail.configured ? 'gmail' : resend.configured ? 'resend' : 'none'
+    resendConfigured: resend.configured
   };
 }
 
@@ -63,6 +69,15 @@ function contactEmailHtml({ name, email, subject, message }) {
   `;
 }
 
+function safeErrorText(value) {
+  let text = String(value || 'Unknown email error');
+  const secrets = [envValue('RESEND_API_KEY'), gmailCredentials().pass].filter(isUsableSecret);
+  secrets.forEach((secret) => {
+    text = text.split(secret).join('[redacted]');
+  });
+  return text.replace(/re_[A-Za-z0-9]+/g, '[redacted]');
+}
+
 function publicEmailError(err) {
   const text = String((err && err.message) || '');
   if (err && err.code === 'EMAIL_NOT_CONFIGURED') {
@@ -83,8 +98,7 @@ async function sendWithGmail(payload) {
     { host: 'smtp.gmail.com', port: 465, secure: true }
   ];
 
-  console.log(`Attempting to send email via Gmail SMTP for ${user}`);
-  console.log(`Gmail app password length: ${pass.length}`);
+  console.log('Attempting to send email via Gmail SMTP');
 
   let lastError;
   for (const setup of setups) {
@@ -103,7 +117,7 @@ async function sendWithGmail(payload) {
       return { id: info && info.messageId ? info.messageId : '' };
     } catch (err) {
       lastError = err;
-      console.error(`Gmail SMTP ${setup.port} failed: ${err.message}`);
+      console.error(`Gmail SMTP ${setup.port} failed: ${safeErrorText(err && err.message)}`);
     }
   }
   throw lastError;
@@ -129,20 +143,30 @@ async function sendWithResend(payload) {
 }
 
 async function deliverContactEmail(payload) {
-  const gmail = gmailCredentials();
-  const resend = resendCredentials();
+  const provider = selectedProvider();
 
-  if (gmail.configured) {
-    console.log('Email provider selected: gmail');
-    return sendWithGmail(payload);
-  }
-  if (resend.configured) {
+  if (provider === 'resend') {
+    if (!resendCredentials().configured) {
+      const error = new Error('Resend is not configured');
+      error.code = 'EMAIL_NOT_CONFIGURED';
+      throw error;
+    }
     console.log('Email provider selected: resend');
     return sendWithResend(payload);
   }
 
+  if (provider === 'gmail') {
+    if (!gmailCredentials().configured) {
+      const error = new Error('Gmail is not configured');
+      error.code = 'EMAIL_NOT_CONFIGURED';
+      throw error;
+    }
+    console.log('Email provider selected: gmail');
+    return sendWithGmail(payload);
+  }
+
   console.log('Email provider selected: none');
-  const error = new Error('No email provider is configured');
+  const error = new Error('No valid email provider configured');
   error.code = 'EMAIL_NOT_CONFIGURED';
   throw error;
 }

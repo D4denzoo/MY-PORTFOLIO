@@ -83,12 +83,12 @@ These are the variables `server.js` reads. Names match `backend/.env.example`.
 |---|---|---|
 | `PORT` | No | Listen port. Defaults to `5000`. Render sets this. |
 | `GITHUB_TOKEN` | No | Sent as a Bearer token when `GET /api/projects` calls the GitHub API. |
-| `RESEND_API_KEY` | Yes, unless Gmail SMTP is configured | Resend API key. Preferred mail path. |
+| `EMAIL_PROVIDER` | Yes | `resend` or `gmail`. The server uses only this value. It does not fall back to the other provider. |
+| `RESEND_API_KEY` | Yes when `EMAIL_PROVIDER=resend` | Resend API key. Set this only on Render. |
 | `CONTACT_FROM` | No | Sender address. Defaults to `Portfolio <onboarding@resend.dev>`. |
 | `CONTACT_TO` | No | Inbox that receives messages. Defaults to `denzelosward109@gmail.com`. |
-| `EMAIL_SERVICE` | No | Nodemailer service. Used only when `RESEND_API_KEY` is empty. Defaults to `gmail`. |
-| `EMAIL_USER` | No | SMTP username. Used only when `RESEND_API_KEY` is empty. |
-| `EMAIL_PASS` | No | SMTP password. Must be a Gmail App Password, not a normal Gmail password. |
+| `EMAIL_USER` | Yes when `EMAIL_PROVIDER=gmail` | SMTP username. Ignored when the provider is Resend. |
+| `EMAIL_PASS` | Yes when `EMAIL_PROVIDER=gmail` | SMTP password. Must be a Gmail App Password, not a normal Gmail password. Ignored when the provider is Resend. |
 | `ADMIN_SECRET` | No | Compared with the `x-admin-secret` header on `GET /api/messages`. |
 
 `POST /api/contact` returns `500` when no provider is configured or the provider rejects the message. It returns `200` only after the provider accepts the message. Accepted messages are also kept in memory until the process restarts.
@@ -158,7 +158,7 @@ If the Render hostname is not `https://denzel-portfolio-api.onrender.com`, updat
 - **Render fails immediately or cannot find `package.json`.** The root directory is probably the repository root. Set it to `backend`, where `package.json` and `server.js` are.
 - **`npm install` fails on Render.** Check the build log. The install must run in `backend`, and the start command must remain `npm start`.
 - **Projects stay empty or fall back to GitHub.** `window.PORTFOLIO_API` must be the Render origin only, for example `https://your-service.onrender.com`, not a path ending in `/api/projects`. The browser gives that request 4 seconds.
-- **The form says it cannot deliver the message.** Render logs should contain `Email sending failed` or `No email provider is configured`. Set `RESEND_API_KEY` on Render. A normal Gmail password will not work.
+- **The form says it cannot deliver the message.** Render logs should contain `Email sending failed` followed by the provider error. Set `EMAIL_PROVIDER=resend` and `RESEND_API_KEY` on Render. `GET /` should show `"provider": "resend"`. A normal Gmail password will not work.
 - **Resend accepts the API call but the inbox stays empty.** With `onboarding@resend.dev`, Resend only delivers to the email address on the Resend account. Sign up with `denzelosward109@gmail.com`, or verify a domain and set `CONTACT_FROM` to an address on that domain. Also check Spam.
 - **`GET /api/messages` returns 403.** Send the header `x-admin-secret` with the same value as `ADMIN_SECRET`.
 - **Browser reports a network or CORS failure.** `server.js` allows all origins. Confirm the frontend URL is the live Render origin, the service is awake, and the path is `/api/projects`.

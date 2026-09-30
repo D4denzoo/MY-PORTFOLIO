@@ -123,14 +123,10 @@ app.post('/api/contact', async (req, res) => {
       receivedAt: new Date().toISOString()
     };
     messages.push(entry);
-    return res.status(200).json({
-      success: true,
-      message: 'Your message has been sent successfully.',
-      data: { id: entry.id, receivedAt: entry.receivedAt }
-    });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error('Email sending failed');
-    console.error(err && err.message ? err.message : 'Unknown email error');
+    console.error(err && err.message ? String(err.message).replace(/re_[A-Za-z0-9]+/g, '[redacted]') : 'Unknown email error');
     return res.status(500).json({
       success: false,
       message: publicEmailError(err)
