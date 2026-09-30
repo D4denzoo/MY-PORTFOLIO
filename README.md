@@ -44,7 +44,7 @@ The projects section asks `window.PORTFOLIO_API` for repositories. That value is
 
 `js/app.js` requests `GET ${PORTFOLIO_API}/api/projects` and waits up to 4 seconds. If that request fails or returns no list, the page requests `https://api.github.com/users/D4denzoo/repos` directly. If that also fails, it shows a small built-in list of repositories.
 
-The contact form does not call the backend. Submitting it opens Gmail with the message addressed to `denzelosward109@gmail.com`. The visitor sends that message from Gmail.
+The contact form sends `POST ${window.PORTFOLIO_API}/api/contact`. The page shows success only when that request returns a successful response. The API returns success only after Resend or Nodemailer accepts the message.
 
 ## Backend
 
@@ -83,12 +83,15 @@ These are the variables `server.js` reads. Names match `backend/.env.example`.
 |---|---|---|
 | `PORT` | No | Listen port. Defaults to `5000`. Render sets this. |
 | `GITHUB_TOKEN` | No | Sent as a Bearer token when `GET /api/projects` calls the GitHub API. |
-| `EMAIL_SERVICE` | No | Nodemailer service name. Defaults to `gmail` when mail is sent. |
-| `EMAIL_USER` | No | SMTP username. Mail is sent only when this and `EMAIL_PASS` are both set. |
-| `EMAIL_PASS` | No | SMTP password. Use a Gmail App Password, not the normal Gmail password. |
+| `RESEND_API_KEY` | Yes, unless Gmail SMTP is configured | Resend API key. Preferred mail path. |
+| `CONTACT_FROM` | No | Sender address. Defaults to `Portfolio <onboarding@resend.dev>`. |
+| `CONTACT_TO` | No | Inbox that receives messages. Defaults to `denzelosward109@gmail.com`. |
+| `EMAIL_SERVICE` | No | Nodemailer service. Used only when `RESEND_API_KEY` is empty. Defaults to `gmail`. |
+| `EMAIL_USER` | No | SMTP username. Used only when `RESEND_API_KEY` is empty. |
+| `EMAIL_PASS` | No | SMTP password. Must be a Gmail App Password, not a normal Gmail password. |
 | `ADMIN_SECRET` | No | Compared with the `x-admin-secret` header on `GET /api/messages`. |
 
-`POST /api/contact` still stores a message in memory when the email variables are empty. It only tries to send mail when both `EMAIL_USER` and `EMAIL_PASS` are set. Stored messages are kept in an array in the running process and are lost when the process restarts.
+`POST /api/contact` returns `500` when no provider is configured or the provider rejects the message. It returns `200` only after the provider accepts the message. Accepted messages are also kept in memory until the process restarts.
 
 ### API endpoints
 
@@ -100,7 +103,7 @@ Defined in `backend/server.js`:
 | `GET` | `/api/profile` | Returns the profile object embedded in `server.js`. |
 | `GET` | `/api/skills` | Returns the skills array embedded in `server.js`. |
 | `GET` | `/api/projects` | Loads public repositories for GitHub user `D4denzoo`, drops forks, and returns `name`, `description`, `url`, `homepage`, `language`, `stars`, `forks`, and `updatedAt`. Responds with `502` if GitHub cannot be reached. |
-| `POST` | `/api/contact` | Expects JSON `name`, `email`, `subject`, and `message`. Validates them, stores the message in memory, and sends mail only when email credentials are set. Returns `201` on success and `400` when validation fails. |
+| `POST` | `/api/contact` | Expects JSON `name`, `email`, `subject`, and `message`. Returns `400` when validation fails, `500` when email delivery fails, and `200` only after the email provider accepts the message. |
 | `GET` | `/api/messages` | Returns the in-memory messages. Requires header `x-admin-secret` equal to `ADMIN_SECRET`. Otherwise returns `403`. |
 
 Any other path returns `404`.
@@ -123,7 +126,7 @@ Only the projects list uses the Render API.
 2. `js/app.js` calls `GET ${window.PORTFOLIO_API}/api/projects`.
 3. If that call does not return a project list within 4 seconds, the browser calls the public GitHub API instead.
 
-The contact form on the page does not send `POST /api/contact`. That endpoint exists for direct API use. To point the projects list at another API, change the `window.PORTFOLIO_API` assignment in `index.html` to the origin only, with no `/api` suffix, then deploy the frontend again.
+The contact form and the projects list both use `window.PORTFOLIO_API`. The form posts to `/api/contact`. To point either request at another API, change that assignment in `index.html` to the origin only, with no `/api` suffix, then deploy the frontend again.
 
 `server.js` enables CORS with `cors()` and does not restrict origins.
 
@@ -155,8 +158,8 @@ If the Render hostname is not `https://denzel-portfolio-api.onrender.com`, updat
 - **Render fails immediately or cannot find `package.json`.** The root directory is probably the repository root. Set it to `backend`, where `package.json` and `server.js` are.
 - **`npm install` fails on Render.** Check the build log. The install must run in `backend`, and the start command must remain `npm start`.
 - **Projects stay empty or fall back to GitHub.** `window.PORTFOLIO_API` must be the Render origin only, for example `https://your-service.onrender.com`, not a path ending in `/api/projects`. The browser gives that request 4 seconds.
-- **The contact button does not create a message in the API.** The page does not call `POST /api/contact`. It opens Gmail. Use `curl` against `/api/contact` to test that route.
-- **Contact API returns success but no email arrives.** `EMAIL_USER` and `EMAIL_PASS` must both be set on Render. `EMAIL_PASS` must be a Gmail App Password. Messages are still stored only until the process restarts.
+- **The form says it cannot deliver the message.** Render logs should contain `Email sending failed` or `No email provider is configured`. Set `RESEND_API_KEY` on Render. A normal Gmail password will not work.
+- **Resend accepts the API call but the inbox stays empty.** With `onboarding@resend.dev`, Resend only delivers to the email address on the Resend account. Sign up with `denzelosward109@gmail.com`, or verify a domain and set `CONTACT_FROM` to an address on that domain. Also check Spam.
 - **`GET /api/messages` returns 403.** Send the header `x-admin-secret` with the same value as `ADMIN_SECRET`.
 - **Browser reports a network or CORS failure.** `server.js` allows all origins. Confirm the frontend URL is the live Render origin, the service is awake, and the path is `/api/projects`.
 

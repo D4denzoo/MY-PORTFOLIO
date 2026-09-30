@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const axios = require('axios');
 
 const app = express();
@@ -90,11 +91,84 @@ app.get('/api/projects', async (_req, res) => {
   }
 });
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function contactEmailHtml({ name, email, subject, message }) {
+  return `
+    <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:20px;">
+      <h2 style="margin-bottom:20px;">New portfolio message</h2>
+      <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+      <p><strong>Subject:</strong> ${escapeHtml(subject)}</p>
+      <div style="padding:16px;background:#f4f1ea;border-radius:8px;">
+        <p style="margin:0;white-space:pre-wrap;line-height:1.6;">${escapeHtml(message)}</p>
+      </div>
+    </div>
+  `;
+}
+
+async function sendWithResend({ name, email, subject, message }) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const from = process.env.CONTACT_FROM || 'Portfolio <onboarding@resend.dev>';
+  const to = process.env.CONTACT_TO || 'denzelosward109@gmail.com';
+  console.log('Attempting to send email via Resend');
+  const { data, error } = await resend.emails.send({
+    from,
+    to: [to],
+    replyTo: email,
+    subject: `[Portfolio] ${subject}`,
+    html: contactEmailHtml({ name, email, subject, message })
+  });
+  if (error) {
+    const failure = new Error(error.message || 'Resend rejected the message');
+    failure.provider = 'resend';
+    throw failure;
+  }
+  return { id: data && data.id ? data.id : '' };
+}
+
+async function sendWithNodemailer({ name, email, subject, message }) {
+  console.log('Attempting to send email via Nodemailer');
+  const transporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE || 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+  const info = await transporter.sendMail({
+    from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+    to: process.env.CONTACT_TO || 'denzelosward109@gmail.com',
+    replyTo: email,
+    subject: `[Portfolio] ${subject}`,
+    html: contactEmailHtml({ name, email, subject, message })
+  });
+  return { id: info && info.messageId ? info.messageId : '' };
+}
+
+async function deliverContactEmail(payload) {
+  if (process.env.RESEND_API_KEY) return sendWithResend(payload);
+  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) return sendWithNodemailer(payload);
+  const error = new Error('No email provider is configured');
+  error.code = 'EMAIL_NOT_CONFIGURED';
+  throw error;
+}
+
 // POST /api/contact
 app.post('/api/contact', async (req, res) => {
-  const { name, email, subject, message } = req.body;
+  const name = String((req.body && req.body.name) || '').trim();
+  const email = String((req.body && req.body.email) || '').trim();
+  const subject = String((req.body && req.body.subject) || '').trim();
+  const message = String((req.body && req.body.message) || '').trim();
 
-  // Validation
+  console.log('Contact form request received');
+
   if (!name || !email || !subject || !message) {
     return res.status(400).json({ success: false, message: 'All fields are required.' });
   }
@@ -102,56 +176,32 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Invalid email address.' });
   }
 
-  // Save message
-  const entry = { id: Date.now(), name, email, subject, message, receivedAt: new Date().toISOString() };
-  messages.push(entry);
-  console.log(`✓ New contact message from ${name} (${email})`);
-
-  // Send email (only if credentials exist)
-  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-    try {
-      const transporter = nodemailer.createTransport({
-        service: process.env.EMAIL_SERVICE || 'gmail',
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        }
-      });
-      await transporter.sendMail({
-        from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-        to: 'denzelosward109@gmail.com',
-        replyTo: email,
-        subject: `[Portfolio] ${subject}`,
-        html: `
-          <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:20px;">
-            <h2 style="color:#3b82f6;margin-bottom:20px;">📬 New Portfolio Message</h2>
-            <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
-              <tr><td style="padding:10px;background:#f8fafc;font-weight:600;width:100px;">Name</td><td style="padding:10px;">${name}</td></tr>
-              <tr><td style="padding:10px;font-weight:600;">Email</td><td style="padding:10px;"><a href="mailto:${email}">${email}</a></td></tr>
-              <tr><td style="padding:10px;background:#f8fafc;font-weight:600;">Subject</td><td style="padding:10px;background:#f8fafc;">${subject}</td></tr>
-            </table>
-            <div style="padding:20px;background:#f1f5f9;border-radius:8px;border-left:4px solid #3b82f6;">
-              <p style="margin:0;white-space:pre-wrap;line-height:1.6;">${message}</p>
-            </div>
-            <p style="color:#94a3b8;font-size:12px;margin-top:20px;">Sent from your portfolio contact form</p>
-          </div>
-        `
-      });
-      console.log(`✓ Email sent to denzelosward109@gmail.com`);
-    } catch (emailErr) {
-      console.error('Email error:', emailErr.message);
-      // Still return success — message is saved
-    }
-  } else {
-    console.warn('⚠ Email credentials not set — skipping email send');
+  try {
+    const result = await deliverContactEmail({ name, email, subject, message });
+    console.log('Email provider response received');
+    console.log(`Email successfully accepted ${result.id}`);
+    const entry = {
+      id: Date.now(),
+      name,
+      email,
+      subject,
+      message,
+      receivedAt: new Date().toISOString()
+    };
+    messages.push(entry);
+    return res.status(200).json({
+      success: true,
+      message: 'Your message has been sent successfully.',
+      data: { id: entry.id, receivedAt: entry.receivedAt }
+    });
+  } catch (err) {
+    console.error('Email sending failed');
+    console.error(err && err.message ? err.message : 'Unknown email error');
+    return res.status(500).json({
+      success: false,
+      message: 'Unable to deliver your message right now. Please try again later.'
+    });
   }
-
-  // Always return success
-  res.status(201).json({
-    success: true,
-    message: "Message received! I'll respond within 24 hours.",
-    data: { id: entry.id, receivedAt: entry.receivedAt }
-  });
 });
 
 // GET /api/messages (admin)

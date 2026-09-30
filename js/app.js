@@ -343,15 +343,20 @@ function initContactForm() {
         data = {};
       }
 
+      if (res.status === 400) {
+        showFeedback(feedback, 'error', data.message || 'Please check the form and try again.');
+        return;
+      }
+
       if (!res.ok || data.success === false) {
-        showFeedback(feedback, 'error', 'Unable to send your message right now. Please try again later.');
+        showFeedback(feedback, 'error', 'Unable to deliver your message right now. Please try again later.');
         return;
       }
 
       showFeedback(feedback, 'success', 'Your message has been sent successfully.');
       form.reset();
     } catch (err) {
-      showFeedback(feedback, 'error', 'Unable to send your message right now. Please try again later.');
+      showFeedback(feedback, 'error', 'Unable to reach the server. Please try again later.');
     } finally {
       submitBtn.disabled = false;
       btnText.style.display = 'inline-flex';
