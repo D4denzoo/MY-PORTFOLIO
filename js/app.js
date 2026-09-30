@@ -4,6 +4,8 @@
 
 'use strict';
 
+const PORTFOLIO_API = 'https://denzel-portfolio-u8jv.onrender.com';
+
 // ─── LOADER ───
 window.addEventListener('load', () => {
   setTimeout(() => {
@@ -239,7 +241,7 @@ function selectRepos(repos) {
 async function fetchGitHubProjects() {
   const grid = document.getElementById('projects-grid');
   try {
-    const api = window.PORTFOLIO_API;
+    const api = PORTFOLIO_API;
     if (api) {
       const apiRes = await fetch(`${api}/api/projects`, { signal: AbortSignal.timeout(4000) });
       if (apiRes.ok) {
@@ -316,7 +318,7 @@ function initContactForm() {
       return;
     }
 
-    const api = String(window.PORTFOLIO_API || '').trim().replace(/\/$/, '');
+    const api = PORTFOLIO_API;
     if (!api) {
       showFeedback(feedback, 'error', 'The contact service is not configured. Please try again later.');
       return;
