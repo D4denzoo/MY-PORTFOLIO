@@ -133,18 +133,24 @@ async function sendWithResend({ name, email, subject, message }) {
   return { id: data && data.id ? data.id : '' };
 }
 
+function envValue(name) {
+  return String(process.env[name] || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
 async function sendWithNodemailer({ name, email, subject, message }) {
-  console.log('Attempting to send email via Nodemailer');
+  const user = envValue('EMAIL_USER');
+  const pass = envValue('EMAIL_PASS').replace(/\s+/g, '');
+  console.log(`Attempting to send email via Gmail SMTP for ${user}`);
+  console.log(`Gmail app password length: ${pass.length}`);
   const transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE || 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: { user, pass }
   });
   const info = await transporter.sendMail({
-    from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-    to: process.env.CONTACT_TO || 'denzelosward109@gmail.com',
+    from: `"Portfolio Contact" <${user}>`,
+    to: envValue('CONTACT_TO') || 'denzelosward109@gmail.com',
     replyTo: email,
     subject: `[Portfolio] ${subject}`,
     html: contactEmailHtml({ name, email, subject, message })
@@ -153,8 +159,18 @@ async function sendWithNodemailer({ name, email, subject, message }) {
 }
 
 async function deliverContactEmail(payload) {
-  if (process.env.RESEND_API_KEY) return sendWithResend(payload);
-  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) return sendWithNodemailer(payload);
+  const resendKey = envValue('RESEND_API_KEY');
+  const user = envValue('EMAIL_USER');
+  const pass = envValue('EMAIL_PASS').replace(/\s+/g, '');
+  if (resendKey) {
+    console.log('Email provider selected: resend');
+    return sendWithResend(payload);
+  }
+  if (user && pass) {
+    console.log('Email provider selected: gmail');
+    return sendWithNodemailer(payload);
+  }
+  console.log('Email provider selected: none');
   const error = new Error('No email provider is configured');
   error.code = 'EMAIL_NOT_CONFIGURED';
   throw error;
