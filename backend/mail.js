@@ -78,13 +78,47 @@ function safeErrorText(value) {
   return text.replace(/re_[A-Za-z0-9]+/g, '[redacted]');
 }
 
+function bareEmail(value) {
+  const text = String(value || '').trim();
+  const wrapped = text.match(/<([^>]+)>/);
+  return (wrapped ? wrapped[1] : text).trim();
+}
+
+function resendFromAddress() {
+  const configured = envValue('CONTACT_FROM');
+  const address = bareEmail(configured);
+  const usesSharedTestDomain = /@resend\.dev$/i.test(address);
+  const usesPublicMailbox = /@(gmail|googlemail|yahoo|hotmail|outlook|live)\./i.test(address);
+  if (!configured || usesSharedTestDomain || usesPublicMailbox) {
+    return 'Portfolio <onboarding@resend.dev>';
+  }
+  return configured;
+}
+
+function resendErrorMessage(error) {
+  if (!error) return 'Resend rejected the message';
+  if (typeof error === 'string') return error;
+  if (typeof error.message === 'string' && error.message) return error.message;
+  if (error.error && typeof error.error.message === 'string') return error.error.message;
+  return 'Resend rejected the message';
+}
+
 function publicEmailError(err) {
-  const text = String((err && err.message) || '');
+  const text = safeErrorText(err && err.message);
   if (err && err.code === 'EMAIL_NOT_CONFIGURED') {
     return 'Email is not configured on the server.';
   }
   if (/invalid login|badcredentials|username and password not accepted|535/i.test(text)) {
     return 'Gmail rejected the mailbox password. Recreate the App Password for denzelosward109@gmail.com and update EMAIL_PASS on Render.';
+  }
+  if (/only send testing emails to your own email/i.test(text)) {
+    return 'Resend is still in test mode, so it can only deliver to the email address on the Resend account. In Resend, open the account email and set CONTACT_TO on Render to that exact address. To deliver to any inbox, verify a domain at resend.com/domains and set CONTACT_FROM to an address on that domain.';
+  }
+  if (/api key is invalid|invalid api key|missing api key/i.test(text)) {
+    return 'Resend rejected the API key. Create a sending key in the Resend dashboard and update RESEND_API_KEY on Render.';
+  }
+  if (/domain is not verified|verify a domain|from address|sender/i.test(text)) {
+    return 'Resend rejected the sender address. Remove CONTACT_FROM until a domain is verified, then set it to an address on that domain.';
   }
   return 'Unable to deliver your message right now. Please try again later.';
 }
@@ -126,19 +160,21 @@ async function sendWithGmail(payload) {
 async function sendWithResend(payload) {
   const { key } = resendCredentials();
   const resend = new Resend(key);
-  const from = envValue('CONTACT_FROM') || 'Portfolio <onboarding@resend.dev>';
-  const to = envValue('CONTACT_TO') || CONTACT_TO;
+  const from = resendFromAddress();
+  const to = bareEmail(envValue('CONTACT_TO') || CONTACT_TO);
+  const replyTo = bareEmail(payload.email);
   console.log('Attempting to send email via Resend');
   const { data, error } = await resend.emails.send({
     from,
     to: [to],
-    replyTo: payload.email,
+    replyTo,
     subject: `[Portfolio] ${payload.subject}`,
     html: contactEmailHtml(payload)
   });
   if (error) {
-    throw new Error(error.message || 'Resend rejected the message');
+    throw new Error(safeErrorText(resendErrorMessage(error)));
   }
+  console.log('Email provider response received');
   return { id: data && data.id ? data.id : '' };
 }
 
