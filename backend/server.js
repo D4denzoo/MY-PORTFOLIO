@@ -1,9 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const nodemailer = require('nodemailer');
-const { Resend } = require('resend');
 const axios = require('axios');
+const { deliverContactEmail, emailStatus, publicEmailError } = require('./mail');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -55,7 +54,11 @@ const messages = [];
 
 // Health check
 app.get('/', (_req, res) => {
-  res.json({ status: 'ok', message: 'Denzel Portfolio API running ✓' });
+  res.json({
+    status: 'ok',
+    message: 'Denzel Portfolio API running ✓',
+    email: emailStatus()
+  });
 });
 
 // GET /api/profile
@@ -90,91 +93,6 @@ app.get('/api/projects', async (_req, res) => {
     res.status(502).json({ success: false, message: 'Failed to fetch GitHub repos', error: err.message });
   }
 });
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function contactEmailHtml({ name, email, subject, message }) {
-  return `
-    <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:20px;">
-      <h2 style="margin-bottom:20px;">New portfolio message</h2>
-      <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-      <p><strong>Subject:</strong> ${escapeHtml(subject)}</p>
-      <div style="padding:16px;background:#f4f1ea;border-radius:8px;">
-        <p style="margin:0;white-space:pre-wrap;line-height:1.6;">${escapeHtml(message)}</p>
-      </div>
-    </div>
-  `;
-}
-
-async function sendWithResend({ name, email, subject, message }) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  const from = process.env.CONTACT_FROM || 'Portfolio <onboarding@resend.dev>';
-  const to = process.env.CONTACT_TO || 'denzelosward109@gmail.com';
-  console.log('Attempting to send email via Resend');
-  const { data, error } = await resend.emails.send({
-    from,
-    to: [to],
-    replyTo: email,
-    subject: `[Portfolio] ${subject}`,
-    html: contactEmailHtml({ name, email, subject, message })
-  });
-  if (error) {
-    const failure = new Error(error.message || 'Resend rejected the message');
-    failure.provider = 'resend';
-    throw failure;
-  }
-  return { id: data && data.id ? data.id : '' };
-}
-
-function envValue(name) {
-  return String(process.env[name] || '').trim().replace(/^['"]|['"]$/g, '');
-}
-
-async function sendWithNodemailer({ name, email, subject, message }) {
-  const user = envValue('EMAIL_USER');
-  const pass = envValue('EMAIL_PASS').replace(/\s+/g, '');
-  console.log(`Attempting to send email via Gmail SMTP for ${user}`);
-  console.log(`Gmail app password length: ${pass.length}`);
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: { user, pass }
-  });
-  const info = await transporter.sendMail({
-    from: `"Portfolio Contact" <${user}>`,
-    to: envValue('CONTACT_TO') || 'denzelosward109@gmail.com',
-    replyTo: email,
-    subject: `[Portfolio] ${subject}`,
-    html: contactEmailHtml({ name, email, subject, message })
-  });
-  return { id: info && info.messageId ? info.messageId : '' };
-}
-
-async function deliverContactEmail(payload) {
-  const resendKey = envValue('RESEND_API_KEY');
-  const user = envValue('EMAIL_USER');
-  const pass = envValue('EMAIL_PASS').replace(/\s+/g, '');
-  if (resendKey) {
-    console.log('Email provider selected: resend');
-    return sendWithResend(payload);
-  }
-  if (user && pass) {
-    console.log('Email provider selected: gmail');
-    return sendWithNodemailer(payload);
-  }
-  console.log('Email provider selected: none');
-  const error = new Error('No email provider is configured');
-  error.code = 'EMAIL_NOT_CONFIGURED';
-  throw error;
-}
 
 // POST /api/contact
 app.post('/api/contact', async (req, res) => {
@@ -215,7 +133,7 @@ app.post('/api/contact', async (req, res) => {
     console.error(err && err.message ? err.message : 'Unknown email error');
     return res.status(500).json({
       success: false,
-      message: 'Unable to deliver your message right now. Please try again later.'
+      message: publicEmailError(err)
     });
   }
 });
