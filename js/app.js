@@ -151,9 +151,23 @@ function formatDate(dateStr) {
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
+function normalizeRepo(repo) {
+  return {
+    name: repo.name,
+    description: repo.description,
+    html_url: repo.html_url || repo.url || repo.homepage || '#',
+    language: repo.language,
+    stargazers_count: repo.stargazers_count ?? repo.stars ?? 0,
+    forks_count: repo.forks_count ?? repo.forks ?? 0,
+    updated_at: repo.updated_at || repo.updatedAt || new Date().toISOString(),
+    fork: repo.fork
+  };
+}
+
 function renderProjects(repos) {
   const grid = document.getElementById('projects-grid');
   if (!grid) return;
+  repos = (repos || []).map(normalizeRepo);
 
   if (!repos || repos.length === 0) {
     grid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No public repositories found.</p></div>';
@@ -165,8 +179,9 @@ function renderProjects(repos) {
     const langColor = LANG_COLORS[lang] || '#64748b';
     const langIcon = LANG_ICONS[lang] || LANG_ICONS['default'];
     const repoIcon = getRepoIcon(repo.name);
-    const desc = repo.description && repo.description !== 'M'
-      ? repo.description
+    const rawDesc = (repo.description || '').trim();
+    const desc = rawDesc.length > 12 && !/^(m|project|hospital system)$/i.test(rawDesc)
+      ? rawDesc
       : inferDescription(repo.name);
     const delay = i * 80;
 
@@ -215,13 +230,31 @@ function inferDescription(name) {
   return map[name] || 'A project built with passion and clean code architecture.';
 }
 
+function selectRepos(repos) {
+  const list = Array.isArray(repos) ? repos : [];
+  const filtered = list.filter(repo => !repo.fork && !/portfolio/i.test(repo.name || ''));
+  return (filtered.length ? filtered : list).slice(0, 6);
+}
+
 async function fetchGitHubProjects() {
   const grid = document.getElementById('projects-grid');
   try {
+    const api = window.PORTFOLIO_API;
+    if (api) {
+      const apiRes = await fetch(`${api}/api/projects`, { signal: AbortSignal.timeout(4000) });
+      if (apiRes.ok) {
+        const payload = await apiRes.json();
+        const repos = payload.data || payload.projects || payload;
+        if (Array.isArray(repos) && repos.length) {
+          renderProjects(selectRepos(repos));
+          return;
+        }
+      }
+    }
     const res = await fetch('https://api.github.com/users/D4denzoo/repos?sort=updated&per_page=30');
     if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
     const repos = await res.json();
-    renderProjects(repos);
+    renderProjects(selectRepos(repos));
   } catch (err) {
     console.warn('GitHub API fetch failed, using local data:', err.message);
     // Fallback to known repos
@@ -262,7 +295,7 @@ function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const name    = document.getElementById('cf-name').value.trim();
@@ -270,54 +303,28 @@ function initContactForm() {
     const subject = document.getElementById('cf-subject').value.trim();
     const message = document.getElementById('cf-message').value.trim();
     const feedback = document.getElementById('form-feedback');
-    const btnText  = document.getElementById('btn-text');
-    const btnLoading = document.getElementById('btn-loading');
-    const submitBtn  = document.getElementById('form-submit');
 
-    // Basic validation
     if (!name || !email || !subject || !message) {
-      showFeedback(feedback, 'error', '⚠ Please fill in all fields.');
+      showFeedback(feedback, 'error', 'Please fill in all fields.');
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showFeedback(feedback, 'error', '⚠ Please enter a valid email address.');
+      showFeedback(feedback, 'error', 'Please enter a valid email address.');
       return;
     }
 
-    // Loading state
-    btnText.style.display = 'none';
-    btnLoading.style.display = 'inline-flex';
-    submitBtn.disabled = true;
-    feedback.style.display = 'none';
+    const gmail = new URL('https://mail.google.com/mail/');
+    gmail.searchParams.set('view', 'cm');
+    gmail.searchParams.set('fs', '1');
+    gmail.searchParams.set('to', 'denzelosward109@gmail.com');
+    gmail.searchParams.set('su', subject);
+    gmail.searchParams.set('body', `Name: ${name}\nEmail: ${email}\n\n${message}`);
 
-    try {
-      // Try backend API — if not configured, use mailto fallback
-      const BACKEND_URL = window.PORTFOLIO_API || '';
+    const opened = window.open(gmail.href, '_blank', 'noopener,noreferrer');
+    if (!opened) window.location.href = gmail.href;
 
-      if (BACKEND_URL) {
-        const res = await fetch(`${BACKEND_URL}/api/contact`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, subject, message })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Server error');
-        showFeedback(feedback, 'success', '✓ Message sent successfully! I\'ll get back to you soon.');
-        form.reset();
-      } else {
-        // Mailto fallback when no backend configured
-        await new Promise(r => setTimeout(r, 1000));
-        const mailtoLink = `mailto:denzelosward109@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${name} (${email})\n\n${message}`)}`;
-        window.location.href = mailtoLink;
-        showFeedback(feedback, 'success', '✓ Opening your email client to send the message…');
-      }
-    } catch (err) {
-      showFeedback(feedback, 'error', `✗ ${err.message || 'Failed to send. Please email directly at denzelosward109@gmail.com'}`);
-    } finally {
-      btnText.style.display = 'inline-flex';
-      btnLoading.style.display = 'none';
-      submitBtn.disabled = false;
-    }
+    showFeedback(feedback, 'success', 'Gmail opened with your message. Press Send and it will arrive at denzelosward109@gmail.com.');
+    form.reset();
   });
 }
 

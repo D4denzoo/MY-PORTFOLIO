@@ -1,419 +1,167 @@
-<<<<<<< HEAD
-# Denzel Osward Chilewa — Portfolio Website
+# Denzel Osward Chilewa — Portfolio
 
-A modern, production-grade personal portfolio for a Data Scientist and Backend Developer. Built with a dark tech editorial aesthetic, live GitHub API integration, animated skill bars, and a working contact form.
+Personal portfolio for Denzel Osward Chilewa, a Data Science graduate based in Dar es Salaam. The repository has two separate parts:
 
----
+- **Frontend:** a static site. The entry point is `index.html`, with styles in `css/` and behavior in `js/`. It is meant to be deployed on Vercel from the repository root.
+- **Backend:** a Node.js and Express API in `backend/`. It is meant to be deployed on Render, with `backend` as the service root directory.
 
-## 🗂 Folder Structure
+Bootstrap 5, Font Awesome, and the Google fonts Fraunces and Manrope are loaded from CDNs in `index.html`. Custom styles are in `css/style.css`. Custom behavior is in `js/app.js`.
 
-```
-denzel-portfolio/
-├── index.html              ← Main frontend (deploy to Vercel)
-├── css/
-│   └── style.css           ← All styles (CSS variables, dark theme, animations)
-├── js/
-│   └── app.js              ← Frontend logic (GitHub API, typing effect, animations)
-├── backend/
-│   ├── server.js           ← Express.js REST API
-│   ├── package.json
-│   ├── .env.example        ← Copy to .env and fill in secrets
-│   └── .env                ← ⚠ Never commit this file
-└── README.md
-=======
-# 🚀 Denzel osward— Personal Portfolio
-
-A full-stack personal portfolio website built with **React + Vite** (frontend) and **Node.js + Express** (backend).
-Frontend is deployed on **Vercel** and backend on **Render**.
-
----
-
-## ✨ Features
-
-- ⚡ React 18 + Vite — blazing fast builds
-- 🎨 Tailwind CSS — utility-first styling with glassmorphism effects
-- 🌗 Dark / Light mode with `localStorage` persistence
-- 🎭 Framer Motion animations and scroll-triggered reveals
-- ⌨️ Typewriter animation in the hero section
-- 📱 Fully responsive — mobile, tablet, desktop
-- 🔌 REST API backend (Node.js + Express)
-- 📬 Contact form with validation, connected to the backend
-- 🛡️ CORS, Helmet, Rate Limiting on the backend
-- 🗂️ Project filter by category
-- 📊 Animated skill progress bars
-
----
-
-## 🗂️ Project Structure
+## Repository structure
 
 ```
-portfolio/
-├── frontend/                  # React + Vite app
-│   ├── public/
-│   ├── src/
-│   │   ├── components/        # UI components (Navbar, Hero, About, …)
-│   │   ├── hooks/             # useFetch, useDarkMode
-│   │   ├── services/          # api.js (axios layer)
-│   │   └── App.jsx
-│   ├── index.html
-│   ├── vite.config.js
-│   ├── tailwind.config.js
-│   ├── vercel.json
-│   └── package.json
-│
-└── backend/                   # Node.js + Express API
-    ├── data/
-    │   ├── profile.json       # Profile / skills / education data
-    │   └── projects.json      # Projects data
-    ├── routes/
-    │   ├── profile.js         # GET /api/profile
-    │   ├── projects.js        # GET /api/projects
-    │   └── contact.js         # POST /api/contact
-    ├── server.js
-    └── package.json
->>>>>>> 83e621c665f2e33d739902c55315a7a06b40f4ca
+index.html                 Static site entry point
+thanks.html                Static thank-you page
+css/style.css              Site styles
+js/app.js                  Site behavior, including project loading
+assets/images/profile.jpg  Profile photo
+backend/server.js          Express API (this is what npm start runs)
+backend/package.json       Backend dependencies and start script
+backend/package-lock.json
+backend/.env.example       Example environment variables
+backend/.gitignore         Ignores backend/.env and node_modules
+backend/data/              JSON files present in the repo
+backend/routes/            Route modules present in the repo
 ```
 
----
+`npm start` runs `node server.js`. `server.js` does not import `backend/data/` or `backend/routes/`. The live API is the set of routes defined in `server.js`.
 
-<<<<<<< HEAD
-## 🚀 Quick Start
+## Frontend
 
-### Frontend (static — no build step needed)
+No install or build step is required.
 
-Open `index.html` directly in a browser, or serve with any static file server:
+Open `index.html` in a browser, or serve the repository root:
 
 ```bash
 npx serve .
 ```
 
-### Backend API
-
-```bash
-cd backend
-cp .env.example .env
-# Edit .env with your credentials
-npm install
-npm run dev       # Development (nodemon auto-reload)
-npm start         # Production
-```
-
-Then set your backend URL in the frontend — add to `index.html` before `app.js`:
+The projects section asks `window.PORTFOLIO_API` for repositories. That value is set in `index.html`:
 
 ```html
-<script>window.PORTFOLIO_API = 'https://your-api.onrender.com';</script>
+<script>window.PORTFOLIO_API = 'https://denzel-portfolio-api.onrender.com';</script>
 ```
 
-=======
-## 🛠️ Technologies Used
+`js/app.js` requests `GET ${PORTFOLIO_API}/api/projects` and waits up to 4 seconds. If that request fails or returns no list, the page requests `https://api.github.com/users/D4denzoo/repos` directly. If that also fails, it shows a small built-in list of repositories.
 
-| Layer     | Tech                                          |
-|-----------|-----------------------------------------------|
-| Frontend  | React 18, Vite, Tailwind CSS, Framer Motion   |
-| Backend   | Node.js, Express, express-validator, Helmet   |
-| HTTP      | Axios                                         |
-| Hosting   | Vercel (frontend), Render (backend)           |
-| Version   | Git + GitHub                                  |
+The contact form does not call the backend. Submitting it opens Gmail with the message addressed to `denzelosward109@gmail.com`. The visitor sends that message from Gmail.
 
----
+## Backend
 
-## ⚙️ Local Installation
-
-### Prerequisites
-- Node.js ≥ 18
-- npm ≥ 9
-- Git
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/portfolio.git
-cd portfolio
-```
-
-### 2. Set up the Backend
+From `backend/`:
 
 ```bash
 cd backend
 npm install
+```
 
-# Copy example env and edit values
+Copy the example environment file, then edit the values you need:
+
+```bash
+# Windows
+copy .env.example .env
+
+# macOS or Linux
 cp .env.example .env
-
-# Start dev server (port 5000)
-npm run dev
 ```
 
-### 3. Set up the Frontend
+Start the API:
 
 ```bash
-cd ../frontend
-npm install
-
-# Copy example env (no changes needed for local dev)
-cp .env.example .env
-
-# Start dev server (port 5173)
-npm run dev
+npm start
 ```
 
-Open [http://localhost:5173](http://localhost:5173).
+`package.json` defines one script, `start`, which runs `node server.js`. The process listens on `process.env.PORT` or port `5000`. A local health check is [http://localhost:5000/](http://localhost:5000/).
 
-> During development, Vite proxies `/api/*` → `http://localhost:5000` automatically.
+`.env` is listed in `backend/.gitignore`. Do not commit it.
 
->>>>>>> 83e621c665f2e33d739902c55315a7a06b40f4ca
----
+### Environment variables
 
-## 🌐 API Endpoints
+These are the variables `server.js` reads. Names match `backend/.env.example`.
 
-<<<<<<< HEAD
-| Method | Endpoint          | Description                          |
-|--------|-------------------|--------------------------------------|
-| GET    | `/`               | Health check                         |
-| GET    | `/api/profile`    | Personal profile data                |
-| GET    | `/api/skills`     | Skills list with proficiency levels  |
-| GET    | `/api/projects`   | Live GitHub repositories             |
-| POST   | `/api/contact`    | Submit contact form                  |
-| GET    | `/api/messages`   | View messages (requires admin secret)|
+| Variable | Required | Used for |
+|---|---|---|
+| `PORT` | No | Listen port. Defaults to `5000`. Render sets this. |
+| `GITHUB_TOKEN` | No | Sent as a Bearer token when `GET /api/projects` calls the GitHub API. |
+| `EMAIL_SERVICE` | No | Nodemailer service name. Defaults to `gmail` when mail is sent. |
+| `EMAIL_USER` | No | SMTP username. Mail is sent only when this and `EMAIL_PASS` are both set. |
+| `EMAIL_PASS` | No | SMTP password. Use a Gmail App Password, not the normal Gmail password. |
+| `ADMIN_SECRET` | No | Compared with the `x-admin-secret` header on `GET /api/messages`. |
 
-### POST /api/contact — Request Body
+`POST /api/contact` still stores a message in memory when the email variables are empty. It only tries to send mail when both `EMAIL_USER` and `EMAIL_PASS` are set. Stored messages are kept in an array in the running process and are lost when the process restarts.
 
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "subject": "Internship Opportunity",
-  "message": "Hi Denzel, I'd like to discuss..."
-}
-```
+### API endpoints
 
-### POST /api/contact — Response
+Defined in `backend/server.js`:
 
-```json
-{
-  "success": true,
-  "message": "Message received! I'll respond within 24 hours.",
-  "data": { "id": 1717000000000, "receivedAt": "2026-05-29T10:00:00.000Z" }
-=======
-| Method | Endpoint              | Description                         |
-|--------|-----------------------|-------------------------------------|
-| GET    | `/`                   | Health check, list of endpoints     |
-| GET    | `/health`             | Server status                       |
-| GET    | `/api/profile`        | Full profile (bio, skills, edu, exp)|
-| GET    | `/api/profile/skills` | Skills only                         |
-| GET    | `/api/projects`       | All projects (supports `?featured=true`, `?category=Frontend`) |
-| GET    | `/api/projects/:id`   | Single project by ID                |
-| POST   | `/api/contact`        | Submit contact form                 |
+| Method | Path | Behavior |
+|---|---|---|
+| `GET` | `/` | Health check. Returns `{ status: "ok", ... }`. |
+| `GET` | `/api/profile` | Returns the profile object embedded in `server.js`. |
+| `GET` | `/api/skills` | Returns the skills array embedded in `server.js`. |
+| `GET` | `/api/projects` | Loads public repositories for GitHub user `D4denzoo`, drops forks, and returns `name`, `description`, `url`, `homepage`, `language`, `stars`, `forks`, and `updatedAt`. Responds with `502` if GitHub cannot be reached. |
+| `POST` | `/api/contact` | Expects JSON `name`, `email`, `subject`, and `message`. Validates them, stores the message in memory, and sends mail only when email credentials are set. Returns `201` on success and `400` when validation fails. |
+| `GET` | `/api/messages` | Returns the in-memory messages. Requires header `x-admin-secret` equal to `ADMIN_SECRET`. Otherwise returns `403`. |
 
-### POST `/api/contact` — Request Body
+Any other path returns `404`.
 
-```json
-{
-  "name": "kelvin mkini",
-  "email": "tibeshagosha21@gmail.com.com",
-  "subject": "Project collaboration",
-  "message": "Hi denzel, I'd love to discuss a project with you!"
->>>>>>> 83e621c665f2e33d739902c55315a7a06b40f4ca
-}
-```
-
----
-
-<<<<<<< HEAD
-## ☁ Deployment
-
-### Frontend → Vercel
-
-1. Push the root folder (or just the frontend files) to a GitHub repo
-2. Go to [vercel.com](https://vercel.com) → New Project → Import repo
-3. Framework: **Other** (static HTML)
-4. Output directory: `.` (root)
-5. Click **Deploy**
-
-### Backend → Render
-
-1. Push the `backend/` folder to a separate GitHub repo (or monorepo)
-2. Go to [render.com](https://render.com) → New Web Service
-3. Connect your repo
-4. Build Command: `npm install`
-5. Start Command: `npm start`
-6. Add environment variables from `.env.example`
-7. Copy the Render URL → paste as `window.PORTFOLIO_API` in `index.html`
-
-### Backend → Railway
+Example contact request:
 
 ```bash
-npm install -g @railway/cli
-railway login
-cd backend
-railway init
-railway up
-=======
-## 🚀 Deployment
-
-### Step 1 — Push to GitHub
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/YOUR_USERNAME/portfolio.git
-git push -u origin main
->>>>>>> 83e621c665f2e33d739902c55315a7a06b40f4ca
+curl -X POST http://localhost:5000/api/contact ^
+  -H "Content-Type: application/json" ^
+  -d "{\"name\":\"Ada\",\"email\":\"ada@example.com\",\"subject\":\"Role\",\"message\":\"Hello\"}"
 ```
 
----
+On macOS or Linux, use `\` instead of `^` for line continuation.
 
-<<<<<<< HEAD
-## 🔑 Environment Variables
+## How the frontend uses the backend
 
-| Variable         | Required | Description                              |
-|------------------|----------|------------------------------------------|
-| `PORT`           | No       | Server port (default: 5000)              |
-| `FRONTEND_URL`   | Yes      | Your Vercel URL (for CORS)               |
-| `GITHUB_TOKEN`   | No       | GitHub PAT (raises rate limit to 5000/hr)|
-| `EMAIL_SERVICE`  | Yes*     | Email provider (`gmail`)                 |
-| `EMAIL_USER`     | Yes*     | Sender email address                     |
-| `EMAIL_PASS`     | Yes*     | Gmail App Password                       |
-| `ADMIN_SECRET`   | No       | Secret for `/api/messages` endpoint      |
+Only the projects list uses the Render API.
 
-*Required only for email sending. Without them, messages are still saved in memory.
+1. `index.html` assigns the Render origin to `window.PORTFOLIO_API`.
+2. `js/app.js` calls `GET ${window.PORTFOLIO_API}/api/projects`.
+3. If that call does not return a project list within 4 seconds, the browser calls the public GitHub API instead.
 
----
+The contact form on the page does not send `POST /api/contact`. That endpoint exists for direct API use. To point the projects list at another API, change the `window.PORTFOLIO_API` assignment in `index.html` to the origin only, with no `/api` suffix, then deploy the frontend again.
 
-## 📧 Gmail App Password Setup
+`server.js` enables CORS with `cors()` and does not restrict origins.
 
-1. Enable 2-Factor Authentication on your Google account
-2. Go to [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
-3. Select **Mail** → **Other** → Enter `Portfolio API`
-4. Copy the 16-character password into `EMAIL_PASS`
+## Deploy the frontend on Vercel
 
----
+1. Push this repository to GitHub.
+2. In Vercel, import `D4denzoo/MY-PORTFOLIO`.
+3. Set the root directory to the repository root. Do not set it to `backend`.
+4. Framework preset: **Other**.
+5. Leave the build command empty. There is no build. Vercel should serve `index.html` from the root.
+6. Deploy.
 
-## 🎨 Customisation
+After deployment, confirm `window.PORTFOLIO_API` in `index.html` is the Render origin. A later push to the connected branch redeploys the site.
 
-All design tokens are in `css/style.css` under `:root {}`:
+## Deploy the backend on Render
 
-```css
-:root {
-  --accent: #3b82f6;    /* Primary blue */
-  --accent-2: #06b6d4;  /* Cyan accent */
-  --bg: #080c14;        /* Deep dark background */
-}
-```
+1. Create a **Web Service** and connect the same GitHub repository.
+2. Set the root directory to `backend`.
+3. Build command: `npm install`.
+4. Start command: `npm start`.
+5. Add any environment variables from the table above that you intend to use. Do not commit those values.
+6. Deploy, then open the service URL. `GET /` should return the health JSON.
 
-Change `--accent` to instantly re-theme the whole site.
+If the Render hostname is not `https://denzel-portfolio-api.onrender.com`, update `window.PORTFOLIO_API` in `index.html` and redeploy the frontend.
 
----
+## Troubleshooting
 
-## 📄 License
+- **Vercel shows the wrong site or a 404.** The root directory is probably `backend` or another subfolder. Set it to the repository root so `index.html` is served.
+- **Render fails immediately or cannot find `package.json`.** The root directory is probably the repository root. Set it to `backend`, where `package.json` and `server.js` are.
+- **`npm install` fails on Render.** Check the build log. The install must run in `backend`, and the start command must remain `npm start`.
+- **Projects stay empty or fall back to GitHub.** `window.PORTFOLIO_API` must be the Render origin only, for example `https://your-service.onrender.com`, not a path ending in `/api/projects`. The browser gives that request 4 seconds.
+- **The contact button does not create a message in the API.** The page does not call `POST /api/contact`. It opens Gmail. Use `curl` against `/api/contact` to test that route.
+- **Contact API returns success but no email arrives.** `EMAIL_USER` and `EMAIL_PASS` must both be set on Render. `EMAIL_PASS` must be a Gmail App Password. Messages are still stored only until the process restarts.
+- **`GET /api/messages` returns 403.** Send the header `x-admin-secret` with the same value as `ADMIN_SECRET`.
+- **Browser reports a network or CORS failure.** `server.js` allows all origins. Confirm the frontend URL is the live Render origin, the service is awake, and the path is `/api/projects`.
 
-MIT © 2026 Denzel Osward Chilewa
-=======
-### Step 2 — Deploy Backend to Render
+## Contact
 
-1. Go to [render.com](https://render.com) → **New Web Service**
-2. Connect your GitHub repo
-3. Set these values:
-
-| Setting         | Value                 |
-|-----------------|-----------------------|
-| Root Directory  | `backend`             |
-| Environment     | Node                  |
-| Build Command   | `npm install`         |
-| Start Command   | `npm start`           |
-| Node Version    | 18                    |
-
-4. Add **Environment Variables**:
-
-| Key               | Value                                      |
-|-------------------|--------------------------------------------|
-| `NODE_ENV`        | `production`                               |
-| `ALLOWED_ORIGINS` | `https://your-portfolio.vercel.app`        |
-| `PORT`            | `5000` (Render sets this automatically)    |
-
-5. Click **Deploy**. Note down your Render URL (e.g. `https://portfolio-api-xxxx.onrender.com`).
-
----
-
-### Step 3 — Deploy Frontend to Vercel
-
-1. Go to [vercel.com](https://vercel.com) → **New Project**
-2. Import your GitHub repo
-3. Set:
-
-| Setting         | Value      |
-|-----------------|------------|
-| Root Directory  | `frontend` |
-| Framework       | Vite       |
-| Build Command   | `npm run build` |
-| Output Dir      | `dist`     |
-
-4. Add **Environment Variable**:
-
-| Key            | Value                                           |
-|----------------|-------------------------------------------------|
-| `VITE_API_URL` | `https://portfolio-api-xxxx.onrender.com`       |
-
-5. Click **Deploy**. Your site is live! 🎉
-
----
-
-### Step 4 — Update Backend CORS
-
-Go back to Render → Environment Variables, update:
-```
-ALLOWED_ORIGINS=https://your-portfolio.vercel.app
-```
-Then redeploy.
-
----
-
-## 🔑 Environment Variables
-
-### Backend (`backend/.env`)
-
-```env
-PORT=5000
-NODE_ENV=development
-ALLOWED_ORIGINS=http://localhost:5173
-```
-
-### Frontend (`frontend/.env`)
-
-```env
-# Leave empty in dev — Vite proxy handles it
-# In production:
-VITE_API_URL=https://your-portfolio-api.onrender.com
-```
-
----
-
-## 📦 Package Commands
-
-```bash
-# Backend
-npm run dev      # Nodemon dev server
-npm start        # Production server
-
-# Frontend
-npm run dev      # Vite dev server
-npm run build    # Production build
-npm run preview  # Preview production build locally
-```
-
----
-
-## 🔗 Live Links (fill in after deploying)
-
-| Service   | URL |
-|-----------|-----|
-| Frontend  | `https://your-portfolio.vercel.app` |
-| Backend   | `https://portfolio-api-xxxx.onrender.com` |
-
----
-
-## 📄 Licence
-
-MIT © Denzel osward
->>>>>>> 83e621c665f2e33d739902c55315a7a06b40f4ca
+- Email: denzelosward109@gmail.com
+- GitHub: [https://github.com/D4denzoo](https://github.com/D4denzoo)
+- Location: Dar es Salaam, Tanzania

@@ -25,7 +25,7 @@ const profile = {
   phone: '+255 756 227 279',
   location: 'Dar es Salaam, Tanzania',
   github: `https://github.com/${GITHUB_USERNAME}`,
-  bio: 'A passionate Data Science student with strong interest in machine learning, data analytics, artificial intelligence, backend systems, and modern web technologies.'
+  bio: 'A Data Science graduate with a strong interest in machine learning, data analytics, artificial intelligence, backend systems, and modern web technologies.'
 };
 
 // ─── SKILLS DATA ───

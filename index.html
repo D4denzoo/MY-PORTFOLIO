@@ -2,49 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Denzel Osward Chilewa — Data Scientist, Machine Learning Enthusiast, Backend Developer based in Dar es Salaam, Tanzania." />
-  <meta name="keywords" content="Data Science, Machine Learning, Python, Django, REST API, Tanzania, EASTC" />
+  <meta name="description" content="Denzel Osward Chilewa is a Data Science graduate in Dar es Salaam. Portfolio covering machine learning, statistical analysis, and backend development." />
+  <meta name="keywords" content="Denzel Osward Chilewa, Data Science, Machine Learning, Python, Django, REST API, Dar es Salaam, EASTC" />
   <meta name="author" content="Denzel Osward Chilewa" />
   <meta property="og:title" content="Denzel Osward Chilewa | Data Scientist" />
-  <meta property="og:description" content="Portfolio of Denzel Osward Chilewa — Data Scientist, ML Enthusiast & Backend Developer." />
+  <meta property="og:description" content="Data Science graduate focused on machine learning, analytics, and full-stack development. Based in Dar es Salaam, Tanzania." />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/images/profile.jpg" />
   <title>Denzel Osward Chilewa | Data Scientist</title>
-
-  <!-- Google Fonts -->
+  <link rel="icon" href="assets/images/profile.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
-  <!-- Bootstrap 5 -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,520;9..144,640&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
-
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<!-- ─── LOADER ─── -->
-<div id="loader">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div id="loader" role="status" aria-label="Loading portfolio">
   <div class="loader-inner">
-    <div class="loader-logo">DOC</div>
+    <img src="assets/images/profile.jpg" alt="" class="loader-photo" />
     <div class="loader-bar"><span></span></div>
   </div>
 </div>
 
-<!-- ─── SCROLL PROGRESS ─── -->
-<div id="scroll-progress"></div>
+<div id="scroll-progress" aria-hidden="true"></div>
 
-<!-- ─── NAVBAR ─── -->
 <nav id="navbar" class="navbar navbar-expand-lg fixed-top">
   <div class="container">
     <a class="navbar-brand" href="#home">
-      <span class="brand-dot"></span>D.O.Chilewa
+      <img src="assets/images/profile.jpg" alt="" class="brand-photo" />
+      Denzel Chilewa
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Open menu">
       <span class="toggler-icon"></span>
       <span class="toggler-icon"></span>
       <span class="toggler-icon"></span>
@@ -59,418 +54,378 @@
         <li class="nav-item"><a class="nav-link" href="#education">Education</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
       </ul>
+      <a class="nav-mail" href="mailto:denzelosward109@gmail.com">Email me</a>
     </div>
   </div>
 </nav>
 
-<!-- ─── HERO ─── -->
-<section id="home" class="hero-section">
-  <div class="hero-bg">
-    <div class="grid-overlay"></div>
-    <div class="particle" style="--x:10%;--y:20%;--d:3s;--size:3px"></div>
-    <div class="particle" style="--x:80%;--y:60%;--d:5s;--size:4px"></div>
-    <div class="particle" style="--x:50%;--y:80%;--d:4s;--size:2px"></div>
-    <div class="particle" style="--x:30%;--y:40%;--d:6s;--size:5px"></div>
-    <div class="particle" style="--x:70%;--y:15%;--d:3.5s;--size:3px"></div>
-    <div class="particle" style="--x:20%;--y:70%;--d:4.5s;--size:2px"></div>
-    <div class="particle" style="--x:90%;--y:40%;--d:2.5s;--size:4px"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-  </div>
-  <div class="container hero-content">
-    <div class="hero-tag reveal-up" data-delay="0">
-      <span class="tag-dot"></span> Available for Opportunities
-    </div>
-    <h1 class="hero-name reveal-up" data-delay="100">
-      DENZEL<br /><em>OSWARD</em><br />CHILEWA
-    </h1>
-    <p class="hero-roles reveal-up" data-delay="200">
-      <span id="typed-role"></span><span class="cursor-blink">_</span>
-    </p>
-    <div class="hero-cta reveal-up" data-delay="300">
-      <a href="#projects" class="btn btn-primary-custom">View My Work <i class="fa-solid fa-arrow-down-long"></i></a>
-      <a href="#contact" class="btn btn-ghost-custom">Get In Touch</a>
-    </div>
-    <div class="hero-stats reveal-up" data-delay="400">
-      <div class="stat-item">
-        <span class="stat-num">3+</span>
-        <span class="stat-label">Projects</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-num">15+</span>
-        <span class="stat-label">Skills</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-num">2023</span>
-        <span class="stat-label">Since</span>
-      </div>
-    </div>
-  </div>
-  <a href="#about" class="scroll-indicator">
-    <span></span>
-    <span></span>
-    <span></span>
-  </a>
-</section>
+<main id="main">
+  <section id="home" class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="hero-tag reveal-up">
+            <span class="tag-dot" aria-hidden="true"></span>
+            Open to data and full-stack development roles
+          </p>
+          <h1 class="hero-name reveal-up" data-delay="80">Denzel Osward Chilewa</h1>
+          <p class="hero-roles reveal-up" data-delay="140">
+            <span id="typed-role"></span><span class="cursor-blink" aria-hidden="true">|</span>
+          </p>
+          <p class="hero-lede reveal-up" data-delay="200">
+            Data Science graduate of EASTC in Dar es Salaam. I work with data, machine learning, and full-stack development to build practical solutions for real-world problems.
 
-<!-- ─── ABOUT ─── -->
-<section id="about" class="section-block">
-  <div class="container">
-    <div class="row align-items-center g-5">
-      <div class="col-lg-5 reveal-left">
-        <div class="about-visual">
-          <div class="avatar-frame">
-            <img src="https://avatars.githubusercontent.com/u/213457309?v=4" alt="Denzel Osward Chilewa" class="avatar-img" />
+          </p>
+          <div class="hero-cta reveal-up" data-delay="260">
+            <a href="#projects" class="btn btn-primary-custom">View my work</a>
+            <a href="#contact" class="btn btn-ghost-custom">Get in touch</a>
           </div>
-          <div class="about-badge badge-1">
-            <i class="fa-solid fa-chart-line"></i>
-            <span>Data Science</span>
-          </div>
-          <div class="about-badge badge-2">
-            <i class="fa-solid fa-brain"></i>
-            <span>ML Engineer</span>
-          </div>
-          <div class="code-snippet">
-            <span class="cs-keyword">import</span> pandas <span class="cs-keyword">as</span> pd<br/>
-            <span class="cs-keyword">from</span> sklearn <span class="cs-keyword">import</span> ml
-          </div>
+          <dl class="hero-facts reveal-up" data-delay="320">
+            <div>
+              <dt>Location</dt>
+              <dd>Dar es Salaam, Tanzania</dd>
+            </div>
+            <div>
+              <dt>Education</dt>
+              <dd>BSc Data Science, EASTC</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd>ML, statistics, APIs</dd>
+            </div>
+          </dl>
+        </div>
+
+        <figure class="hero-portrait reveal-right" data-delay="120">
+          <img src="assets/images/profile.jpg" alt="Denzel Osward Chilewa, standing outdoors in a light striped shirt" />
+          <figcaption>
+            <strong>Denzel O. Chilewa</strong>
+            <span>Data Science · Dar es Salaam</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section-block">
+    <div class="container">
+      <div class="row g-5 align-items-start">
+        <div class="col-lg-7 reveal-left">
+          <div class="section-label">About</div>
+          <h2 class="section-heading">A clear path from data to a decision</h2>
+          <p class="about-text">
+           I am a passionate Data Science graduate from the Eastern Africa Statistical Training Centre (EASTC), with a strong interest in data analytics, machine learning, and full-stack software development. I work across the development process from exploring and analyzing data, building and evaluating machine learning models, to developing responsive frontend interfaces and scalable backend systems.
+</p>
+
+<p class="about-text"> My approach combines statistical thinking with practical software engineering to transform data and ideas into reliable, user-focused applications. I have experience working with Python, R, SQL, modern web technologies, databases, and machine learning workflows, with a focus on building solutions that are practical, maintainable, and scalable.</p>
+
+<p class="about-text"> I am interested in opportunities where I can contribute to data-driven products, intelligent systems, and modern web applications while continuing to strengthen my skills and work on real-world problems.</p>
+
+            
+          </p>
+        </div>
+        <div class="col-lg-5 reveal-right">
+          <ul class="about-list">
+            <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>Dar es Salaam, Tanzania</span></li>
+            <li><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span>BSc Data Science, graduated 2026</span></li>
+            <li><i class="fa-solid fa-envelope" aria-hidden="true"></i><a href="mailto:denzelosward109@gmail.com">denzelosward109@gmail.com</a></li>
+            <li><i class="fa-solid fa-phone" aria-hidden="true"></i><a href="tel:+255756227279">+255 756 227 279</a></li>
+            <li><i class="fa-brands fa-github" aria-hidden="true"></i><a href="https://github.com/D4denzoo" target="_blank" rel="noopener noreferrer">github.com/D4denzoo</a></li>
+          </ul>
         </div>
       </div>
-      <div class="col-lg-7 reveal-right">
-        <div class="section-label">About Me</div>
-        <h2 class="section-heading">Turning Data into<br /><em>Meaningful Decisions</em></h2>
-        <p class="about-text">
-          I'm a passionate Data Science student at <strong>Eastern Africa Statistical Training Centre (EASTC)</strong> with a deep interest in machine learning, artificial intelligence, and backend system design. I believe that data, when wielded well, has the power to transform industries and improve lives.
-        </p>
-        <p class="about-text">
-          Beyond crunching numbers, I enjoy building scalable APIs, crafting clean web experiences, and exploring the intersection of statistics and modern computing. My goal is to contribute to intelligent systems that solve real-world problems across Africa and beyond.
-        </p>
-        <div class="about-info-grid">
-          <div class="info-cell"><i class="fa-solid fa-location-dot"></i> Dar es Salaam, Tanzania</div>
-          <div class="info-cell"><i class="fa-solid fa-graduation-cap"></i> BSc Data Science (In Progress)</div>
-          <div class="info-cell"><i class="fa-solid fa-envelope"></i> denzelosward109@gmail.com</div>
-          <div class="info-cell"><i class="fa-brands fa-github"></i> github.com/D4denzoo</div>
+    </div>
+  </section>
+
+  <section id="skills" class="section-block section-alt">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <div class="section-label">Skills</div>
+        <h2 class="section-heading">Tools I use with confidence</h2>
+        <p class="section-sub">Working proficiency, shown honestly so one can see where I am strongest today.</p>
+      </div>
+      <div class="row g-4 mt-2">
+        <div class="col-lg-4 reveal-up">
+          <article class="skill-category-card">
+            <div class="skill-cat-icon"><i class="fa-solid fa-database" aria-hidden="true"></i></div>
+            <h3>Data science</h3>
+            <div class="skill-bars">
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>Python</span><span class="skill-pct">90%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>Statistics</span><span class="skill-pct">88%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>SQL</span><span class="skill-pct">85%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>R</span><span class="skill-pct">80%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+              </div>
+            </div>
+          </article>
         </div>
-        <a href="https://github.com/D4denzoo" target="_blank" class="btn btn-primary-custom mt-4">
-          <i class="fa-brands fa-github me-2"></i>View GitHub Profile
+        <div class="col-lg-4 reveal-up" data-delay="80">
+          <article class="skill-category-card">
+            <div class="skill-cat-icon"><i class="fa-solid fa-brain" aria-hidden="true"></i></div>
+            <h3>Machine learning</h3>
+            <div class="skill-bars">
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>Data analysis</span><span class="skill-pct">87%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="87"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>Machine learning</span><span class="skill-pct">82%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="82"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>Data visualisation</span><span class="skill-pct">80%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>Power BI</span><span class="skill-pct">55%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="col-lg-4 reveal-up" data-delay="160">
+          <article class="skill-category-card">
+            <div class="skill-cat-icon"><i class="fa-solid fa-code" aria-hidden="true"></i></div>
+            <h3>Development</h3>
+            <div class="skill-bars">
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>Git &amp; GitHub</span><span class="skill-pct">88%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>HTML &amp; CSS</span><span class="skill-pct">85%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>Django &amp; REST APIs</span><span class="skill-pct">78%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-label"><span>JavaScript</span><span class="skill-pct">65%</span></div>
+                <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="skills-pill-row reveal-up mt-5">
+        <span class="skill-pill"><i class="fa-brands fa-python" aria-hidden="true"></i> Python</span>
+        <span class="skill-pill"><i class="fa-solid fa-chart-bar" aria-hidden="true"></i> R</span>
+        <span class="skill-pill"><i class="fa-solid fa-database" aria-hidden="true"></i> SQL</span>
+        <span class="skill-pill"><i class="fa-solid fa-brain" aria-hidden="true"></i> Machine learning</span>
+        <span class="skill-pill"><i class="fa-solid fa-server" aria-hidden="true"></i> Django</span>
+        <span class="skill-pill"><i class="fa-solid fa-plug" aria-hidden="true"></i> REST APIs</span>
+        <span class="skill-pill"><i class="fa-brands fa-html5" aria-hidden="true"></i> HTML</span>
+        <span class="skill-pill"><i class="fa-brands fa-css3-alt" aria-hidden="true"></i> CSS</span>
+        <span class="skill-pill"><i class="fa-brands fa-js" aria-hidden="true"></i> JavaScript</span>
+        <span class="skill-pill"><i class="fa-brands fa-bootstrap" aria-hidden="true"></i> Bootstrap</span>
+        <span class="skill-pill"><i class="fa-brands fa-github" aria-hidden="true"></i> Git</span>
+        <span class="skill-pill"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i> Power BI</span>
+        <span class="skill-pill"><i class="fa-solid fa-file-excel" aria-hidden="true"></i> Excel</span>
+        <span class="skill-pill"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i> Statistics</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" class="section-block">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <div class="section-label">Services</div>
+        <h2 class="section-heading">How I can contribute</h2>
+      </div>
+      <div class="row g-4 mt-2">
+        <div class="col-md-6 col-lg-3 reveal-up">
+          <article class="cap-card">
+            <span class="cap-index">01</span>
+            <div class="cap-icon-wrap"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></div>
+            <h3>Data analytics</h3>
+            <p>Clean datasets, summarise them with statistics, and present findings people can act on.</p>
+          </article>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal-up" data-delay="80">
+          <article class="cap-card">
+            <span class="cap-index">02</span>
+            <div class="cap-icon-wrap"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
+            <h3>Machine learning</h3>
+            <p>Build practical models with pandas and scikit-learn, then explain what the results mean.</p>
+          </article>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal-up" data-delay="160">
+          <article class="cap-card">
+            <span class="cap-index">03</span>
+            <div class="cap-icon-wrap"><i class="fa-solid fa-globe" aria-hidden="true"></i></div>
+            <h3>Web development</h3>
+            <p>Design responsive pages with HTML, CSS, Bootstrap, and JavaScript that stay easy to maintain.</p>
+          </article>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal-up" data-delay="240">
+          <article class="cap-card">
+            <span class="cap-index">04</span>
+            <div class="cap-icon-wrap"><i class="fa-solid fa-plug-circle-bolt" aria-hidden="true"></i></div>
+            <h3>Full-Stack Development & API development</h3>
+            <p>Build responsive frontend and backend applications, develop RESTful APIs, and integrate data-driven features into scalable web systems.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section-block section-alt">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <div class="section-label">Projects</div>
+        <h2 class="section-heading">Selected work from GitHub</h2>
+        <p class="section-sub">Loaded from my public repositories so the list stays current.</p>
+      </div>
+      <div id="projects-grid" class="row g-4 mt-2">
+        <div class="col-12 text-center py-5">
+          <div class="loading-spinner" role="status" aria-label="Loading projects"></div>
+          <p class="mt-3 text-muted">Fetching projects…</p>
+        </div>
+      </div>
+      <div class="text-center mt-5 reveal-up">
+        <a href="https://github.com/D4denzoo" target="_blank" rel="noopener noreferrer" class="btn btn-primary-custom">
+          <i class="fa-brands fa-github" aria-hidden="true"></i> View GitHub profile
         </a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ─── SKILLS ─── -->
-<section id="skills" class="section-block section-alt">
-  <div class="container">
-    <div class="section-header reveal-up">
-      <div class="section-label">Technical Arsenal</div>
-      <h2 class="section-heading">Skills &amp; <em>Expertise</em></h2>
+  <section id="education" class="section-block">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <div class="section-label">Education</div>
+        <h2 class="section-heading">Where I trained</h2>
+      </div>
+      <div class="edu-timeline">
+        <article class="edu-item reveal-up">
+          <div class="edu-connector">
+            <div class="edu-dot"></div>
+            <div class="edu-line"></div>
+          </div>
+          <div class="edu-card">
+            <div class="edu-period">2023 – 2026</div>
+            <div class="edu-institution"><i class="fa-solid fa-building-columns" aria-hidden="true"></i> Eastern Africa Statistical Training Centre</div>
+            <h3 class="edu-degree">Bachelor Degree in Data Science</h3>
+            <p class="edu-desc">Completed a degree in machine learning, statistical modelling, databases, artificial intelligence, and software development, applied to practical data problems.</p>
+            <div class="edu-tags">
+              <span>Machine learning</span><span>Statistics</span><span>Databases</span><span>Full-stack development</span>
+            </div>
+          </div>
+        </article>
+        <article class="edu-item reveal-up" data-delay="80">
+          <div class="edu-connector">
+            <div class="edu-dot"></div>
+          </div>
+          <div class="edu-card">
+            <div class="edu-period">2021 – 2023</div>
+            <div class="edu-institution"><i class="fa-solid fa-school" aria-hidden="true"></i> Tunduru High School</div>
+            <h3 class="edu-degree">Advanced Level secondary education</h3>
+            <p class="edu-desc">A strong base in mathematics, statistics, and analytical reasoning that led into data science.</p>
+            <div class="edu-tags">
+              <span>Mathematics</span><span>Statistics</span><span>Analytical thinking</span>
+            </div>
+          </div>
+        </article>
+      </div>
     </div>
-    <div class="row g-4 mt-2">
-      <!-- Skill categories -->
-      <div class="col-lg-4 reveal-up" data-delay="0">
-        <div class="skill-category-card">
-          <div class="skill-cat-icon"><i class="fa-solid fa-database"></i></div>
-          <h4>Data Science</h4>
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Python</span><span class="skill-pct">90%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>R Programming</span><span class="skill-pct">80%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>SQL</span><span class="skill-pct">85%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Statistics</span><span class="skill-pct">88%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
+  </section>
+
+  <section id="contact" class="section-block section-alt">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <div class="section-label">Contact</div>
+        <h2 class="section-heading">Let’s talk about a role</h2>
+      </div>
+      <div class="row g-4 g-lg-5 mt-2">
+        <div class="col-lg-5 reveal-left">
+          <p class="contact-intro">If you are looking for someone in data science, machine learning, analytics, or full-stack development, I would be glad to connect. I am open to professional opportunities, technical collaborations, and projects where I can contribute meaningful, data-driven solutions.
+</p>
+          <div class="contact-cards">
+            <a href="mailto:denzelosward109@gmail.com" class="contact-card">
+              <div class="cc-icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></div>
+              <div class="cc-info">
+                <span class="cc-label">Email</span>
+                <span class="cc-val">denzelosward109@gmail.com</span>
+              </div>
+            </a>
+            <a href="tel:+255756227279" class="contact-card">
+              <div class="cc-icon"><i class="fa-solid fa-phone" aria-hidden="true"></i></div>
+              <div class="cc-info">
+                <span class="cc-label">Phone</span>
+                <span class="cc-val">+255 756 227 279</span>
+              </div>
+            </a>
+            <a href="https://github.com/D4denzoo" target="_blank" rel="noopener noreferrer" class="contact-card">
+              <div class="cc-icon"><i class="fa-brands fa-github" aria-hidden="true"></i></div>
+              <div class="cc-info">
+                <span class="cc-label">GitHub</span>
+                <span class="cc-val">github.com/D4denzoo</span>
+              </div>
+            </a>
+            <div class="contact-card">
+              <div class="cc-icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></div>
+              <div class="cc-info">
+                <span class="cc-label">Location</span>
+                <span class="cc-val">Dar es Salaam, Tanzania</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-lg-4 reveal-up" data-delay="100">
-        <div class="skill-category-card">
-          <div class="skill-cat-icon"><i class="fa-solid fa-brain"></i></div>
-          <h4>Machine Learning</h4>
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Machine Learning</span><span class="skill-pct">82%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="82"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Data Analysis</span><span class="skill-pct">87%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="87"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Data Visualization</span><span class="skill-pct">80%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Power BI</span><span class="skill-pct">75%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 reveal-up" data-delay="200">
-        <div class="skill-category-card">
-          <div class="skill-cat-icon"><i class="fa-solid fa-code"></i></div>
-          <h4>Development</h4>
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Django / REST APIs</span><span class="skill-pct">78%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>HTML / CSS</span><span class="skill-pct">85%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>JavaScript</span><span class="skill-pct">75%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
-            </div>
-            <div class="skill-bar-item">
-              <div class="skill-bar-label"><span>Git &amp; GitHub</span><span class="skill-pct">88%</span></div>
-              <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pill badges -->
-    <div class="skills-pill-row reveal-up mt-5">
-      <span class="skill-pill"><i class="fa-brands fa-python"></i> Python</span>
-      <span class="skill-pill"><i class="fa-solid fa-chart-bar"></i> R</span>
-      <span class="skill-pill"><i class="fa-solid fa-database"></i> SQL</span>
-      <span class="skill-pill"><i class="fa-solid fa-brain"></i> ML</span>
-      <span class="skill-pill"><i class="fa-solid fa-server"></i> Django</span>
-      <span class="skill-pill"><i class="fa-solid fa-plug"></i> REST API</span>
-      <span class="skill-pill"><i class="fa-brands fa-html5"></i> HTML5</span>
-      <span class="skill-pill"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
-      <span class="skill-pill"><i class="fa-brands fa-js"></i> JavaScript</span>
-      <span class="skill-pill"><i class="fa-brands fa-bootstrap"></i> Bootstrap</span>
-      <span class="skill-pill"><i class="fa-brands fa-github"></i> Git</span>
-      <span class="skill-pill"><i class="fa-solid fa-chart-pie"></i> Power BI</span>
-      <span class="skill-pill"><i class="fa-solid fa-file-excel"></i> Excel</span>
-      <span class="skill-pill"><i class="fa-solid fa-magnifying-glass-chart"></i> Statistics</span>
-      <span class="skill-pill"><i class="fa-solid fa-eye"></i> Data Viz</span>
-    </div>
-  </div>
-</section>
-
-<!-- ─── CAPABILITIES ─── -->
-<section id="capabilities" class="section-block">
-  <div class="container">
-    <div class="section-header reveal-up">
-      <div class="section-label">What I Offer</div>
-      <h2 class="section-heading">Professional <em>Capabilities</em></h2>
-    </div>
-    <div class="row g-4 mt-2">
-      <div class="col-md-6 col-lg-3 reveal-up" data-delay="0">
-        <div class="cap-card">
-          <div class="cap-icon-wrap"><i class="fa-solid fa-chart-line"></i></div>
-          <h4>Data Analytics</h4>
-          <p>Transforming raw datasets into actionable insights using statistical analysis, visualization, and storytelling with data.</p>
-          <div class="cap-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3 reveal-up" data-delay="100">
-        <div class="cap-card">
-          <div class="cap-icon-wrap"><i class="fa-solid fa-robot"></i></div>
-          <h4>Machine Learning</h4>
-          <p>Building predictive models, classifiers, and intelligent pipelines using scikit-learn, pandas, and modern ML frameworks.</p>
-          <div class="cap-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3 reveal-up" data-delay="200">
-        <div class="cap-card">
-          <div class="cap-icon-wrap"><i class="fa-solid fa-globe"></i></div>
-          <h4>Web Development</h4>
-          <p>Designing responsive, modern web interfaces using HTML5, CSS3, Bootstrap, and JavaScript with clean semantic code.</p>
-          <div class="cap-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3 reveal-up" data-delay="300">
-        <div class="cap-card">
-          <div class="cap-icon-wrap"><i class="fa-solid fa-plug-circle-bolt"></i></div>
-          <h4>API Development</h4>
-          <p>Building scalable REST APIs with Django REST Framework and Node.js/Express, including authentication and deployment.</p>
-          <div class="cap-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── PROJECTS ─── -->
-<section id="projects" class="section-block section-alt">
-  <div class="container">
-    <div class="section-header reveal-up">
-      <div class="section-label">GitHub Portfolio</div>
-      <h2 class="section-heading">Recent <em>Projects</em></h2>
-      <p class="section-sub">Dynamically loaded from my GitHub — live data, always up to date.</p>
-    </div>
-    <div id="projects-grid" class="row g-4 mt-2">
-      <div class="col-12 text-center py-5">
-        <div class="loading-spinner"></div>
-        <p class="mt-3 text-muted">Fetching projects from GitHub…</p>
-      </div>
-    </div>
-    <div class="text-center mt-5 reveal-up">
-      <a href="https://github.com/D4denzoo" target="_blank" class="btn btn-primary-custom">
-        <i class="fa-brands fa-github me-2"></i>View All on GitHub
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ─── EDUCATION ─── -->
-<section id="education" class="section-block">
-  <div class="container">
-    <div class="section-header reveal-up">
-      <div class="section-label">Academic Background</div>
-      <h2 class="section-heading">Education &amp; <em>Training</em></h2>
-    </div>
-    <div class="edu-timeline">
-
-      <div class="edu-item reveal-left">
-        <div class="edu-connector">
-          <div class="edu-dot"></div>
-          <div class="edu-line"></div>
-        </div>
-        <div class="edu-card">
-          <div class="edu-period">2023 – Present</div>
-          <div class="edu-institution">
-            <i class="fa-solid fa-building-columns"></i> Eastern Africa Statistical Training Centre (EASTC)
-          </div>
-          <h3 class="edu-degree">Bachelor of Science in Data Science</h3>
-          <p class="edu-desc">
-            Immersed in a rigorous curriculum covering machine learning, statistical modelling, database systems, artificial intelligence, data engineering, and software development. Applying theory to real-world data challenges across East Africa.
-          </p>
-          <div class="edu-tags">
-            <span>Machine Learning</span><span>Statistics</span><span>AI</span><span>Database Systems</span><span>Data Engineering</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="edu-item reveal-right">
-        <div class="edu-connector">
-          <div class="edu-dot"></div>
-        </div>
-        <div class="edu-card">
-          <div class="edu-period">2021 – 2023</div>
-          <div class="edu-institution">
-            <i class="fa-solid fa-school"></i> Tunduru High School
-          </div>
-          <h3 class="edu-degree">Advanced Level Secondary Education</h3>
-          <p class="edu-desc">
-            Completed Advanced Level studies with a strong emphasis on mathematics, statistics, and analytical reasoning — forming the core foundation for my data science journey.
-          </p>
-          <div class="edu-tags">
-            <span>Mathematics</span><span>Statistics</span><span>Analytical Thinking</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ─── CONTACT ─── -->
-<section id="contact" class="section-block section-alt">
-  <div class="container">
-    <div class="section-header reveal-up">
-      <div class="section-label">Let's Connect</div>
-      <h2 class="section-heading">Get In <em>Touch</em></h2>
-    </div>
-    <div class="row g-5 mt-2">
-      <!-- Contact info -->
-      <div class="col-lg-5 reveal-left">
-        <p class="contact-intro">Have a project in mind, a question, or just want to connect? I'm always open to new opportunities and collaborations.</p>
-        <div class="contact-cards">
-          <a href="mailto:denzelosward109@gmail.com" class="contact-card">
-            <div class="cc-icon"><i class="fa-solid fa-envelope"></i></div>
-            <div class="cc-info">
-              <span class="cc-label">Email</span>
-              <span class="cc-val">denzelosward109@gmail.com</span>
-            </div>
-          </a>
-          <a href="tel:+255756227279" class="contact-card">
-            <div class="cc-icon"><i class="fa-solid fa-phone"></i></div>
-            <div class="cc-info">
-              <span class="cc-label">Phone</span>
-              <span class="cc-val">+255 756 227 279</span>
-            </div>
-          </a>
-          <a href="https://github.com/D4denzoo" target="_blank" class="contact-card">
-            <div class="cc-icon"><i class="fa-brands fa-github"></i></div>
-            <div class="cc-info">
-              <span class="cc-label">GitHub</span>
-              <span class="cc-val">github.com/D4denzoo</span>
-            </div>
-          </a>
-          <div class="contact-card">
-            <div class="cc-icon"><i class="fa-solid fa-location-dot"></i></div>
-            <div class="cc-info">
-              <span class="cc-label">Location</span>
-              <span class="cc-val">Dar es Salaam, Tanzania</span>
-            </div>
-          </div>
-        </div>
-        <!-- Map embed -->
-        <div class="map-embed reveal-up mt-4">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253682.46350985895!2d39.08155784!3d-6.79235490!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c4bae169bd6f1%3A0x940f6b26a086a1e2!2sDar%20es%20Salaam%2C%20Tanzania!5e0!3m2!1sen!2s!4v1690000000000!5m2!1sen!2s"
-            width="100%" height="200" style="border:0;border-radius:12px;" allowfullscreen loading="lazy"></iframe>
-        </div>
-      </div>
-
-      <!-- Contact form -->
-      <div class="col-lg-7 reveal-right">
-        <form id="contact-form" class="contact-form" novalidate>
-          <div class="form-row-2">
-            <div class="form-group-custom">
-              <label>Full Name</label>
-              <input type="text" id="cf-name" class="form-input" placeholder="Your full name" required />
+        <div class="col-lg-7 reveal-right">
+          <form id="contact-form" class="contact-form" novalidate>
+            <div class="form-row-2">
+              <div class="form-group-custom">
+                <label for="cf-name">Full name</label>
+                <input type="text" id="cf-name" name="name" class="form-input" placeholder="Your name" required autocomplete="name" />
+              </div>
+              <div class="form-group-custom">
+                <label for="cf-email">Email</label>
+                <input type="email" id="cf-email" name="email" class="form-input" placeholder="you@company.com" required autocomplete="email" />
+              </div>
             </div>
             <div class="form-group-custom">
-              <label>Email Address</label>
-              <input type="email" id="cf-email" class="form-input" placeholder="your@email.com" required />
+              <label for="cf-subject">Subject</label>
+              <input type="text" id="cf-subject" name="_subject" class="form-input" placeholder="Role or collaboration" required />
             </div>
-          </div>
-          <div class="form-group-custom">
-            <label>Subject</label>
-            <input type="text" id="cf-subject" class="form-input" placeholder="Message subject" required />
-          </div>
-          <div class="form-group-custom">
-            <label>Message</label>
-            <textarea id="cf-message" class="form-input" rows="6" placeholder="Tell me what's on your mind…" required></textarea>
-          </div>
-          <div id="form-feedback" class="form-feedback" style="display:none"></div>
-          <button type="submit" class="btn btn-primary-custom w-100 mt-2" id="form-submit">
-            <span id="btn-text" style="display:inline-flex;align-items:center;gap:8px;"><i class="fa-solid fa-paper-plane"></i>Send Message</span>
-            <span id="btn-loading" style="display:none;align-items:center;gap:8px;"><div class="btn-spinner"></div> Sending…</span>
-          </button>
-        </form>
+            <div class="form-group-custom">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" name="message" class="form-input" rows="6" placeholder="A short note about the role or project" required></textarea>
+            </div>
+            <p class="form-note">Email me opens Gmail with your message already addressed to denzelosward109@gmail.com. Press Send there and it arrives in that inbox.</p>
+            <div id="form-feedback" class="form-feedback" style="display:none" role="status"></div>
+            <button type="submit" class="btn btn-primary-custom w-100" id="form-submit">
+              <span id="btn-text"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Email me</span>
+              <span id="btn-loading" style="display:none"><span class="btn-spinner"></span> Sending…</span>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<!-- ─── FOOTER ─── -->
 <footer class="site-footer">
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-brand">D.O.Chilewa</div>
-      <nav class="footer-nav">
-        <a href="#home">Home</a>
+      <div class="footer-brand">
+        <img src="assets/images/profile.jpg" alt="" />
+        <div>
+          <strong>Denzel Osward Chilewa</strong>
+          <span>Data Scientist · Dar es Salaam</span>
+        </div>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
@@ -478,23 +433,19 @@
         <a href="#contact">Contact</a>
       </nav>
       <div class="footer-socials">
-        <a href="https://github.com/D4denzoo" target="_blank"><i class="fa-brands fa-github"></i></a>
-        <a href="mailto:denzelosward109@gmail.com"><i class="fa-solid fa-envelope"></i></a>
-        <a href="tel:+255756227279"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://github.com/D4denzoo" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+        <a href="mailto:denzelosward109@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        <a href="tel:+255756227279" aria-label="Phone"><i class="fa-solid fa-phone" aria-hidden="true"></i></a>
       </div>
     </div>
-    <div class="footer-copy">© 2026 Denzel Osward Chilewa. All rights reserved.</div>
+    <p class="footer-copy">© 2026 Denzel Osward Chilewa. All rights reserved.</p>
   </div>
 </footer>
 
-<!-- ─── SCROLL TO TOP ─── -->
-<button id="scroll-top" aria-label="Scroll to top"><i class="fa-solid fa-arrow-up"></i></button>
+<button id="scroll-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Backend API URL -->
 <script>window.PORTFOLIO_API = 'https://denzel-portfolio-api.onrender.com';</script>
-<!-- Custom JS -->
-<script src="js/app.js"></script>
+<script src="js/app.js?v=6"></script>
 </body>
 </html>

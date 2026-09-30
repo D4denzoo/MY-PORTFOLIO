@@ -1,8 +1,8 @@
 {
   "name": "Denzel Osward",
-  "title": "Student Developer",
+  "title": "Data Scientist",
   "tagline": "Building elegant solutions to complex problems",
-  "bio": "I'm a passionate student developer  crafting scalable web applications. I thrive at the intersection of clean code and beautiful user interfaces — turning ambitious ideas into polished digital products.",
+  "bio": "I'm a Data Science graduate focused on machine learning, analytics, and backend systems. I turn data into clear decisions and build the software that makes those results usable.",
   "location": "Dar es Salaam, Tanzania",
   "email": "denzelosward109@gmail.com",
   "phone": "+255 756 227 279",
@@ -50,7 +50,7 @@
     {
       "degree": "B.Sc. Data Science",
       "institution": "Eastern African statistical training centre, Dar es Salaam",
-      "period": "2023 – present"
+      "period": "2023 – 2026"
     
   
     },
@@ -64,10 +64,10 @@
  
   "experience": [
     {
-      "position": "Student Developer",
+      "position": "Data Science graduate",
       "company": "Eastern Africa Statistical Training Centre",
-      "period": "2023 – Present",
-      "description": "Contributing to web development projects, collaborating with cross-functional teams, and gaining hands-on experience in building scalable applications."
+      "period": "2023 – 2026",
+      "description": "Completed a BSc in Data Science, applying statistics, machine learning, and software development to practical data problems."
     }
   ]
 }
