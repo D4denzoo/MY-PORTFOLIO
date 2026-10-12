@@ -144,6 +144,39 @@ const REPO_ICON = {
   default:                   'fa-solid fa-folder-open'
 };
 
+const PROJECTS = {
+  'Farmsense': {
+    description: 'Farm planning for Tanzania: record a farm, choose a crop from rainfall and soil, and track harvests and costs in TZS.',
+    image: 'images/projects/farmsense.jpg'
+  },
+  'clinexa-health': {
+    description: 'Hospital desks for one facility: registration, the outpatient queue, lab, pharmacy, ward, and cashier on one client file.',
+    image: 'images/projects/clinexa.jpg'
+  },
+  'SokoPlus.': {
+    description: 'A single online shop for everyday goods, with cart, checkout, and delivery priced in Tanzanian shillings.',
+    image: 'images/projects/sokoplus.jpg'
+  },
+  'sombetini-school': {
+    description: 'Public site and school system for Sombetini Primary, with parent results, teacher marks, and fee control numbers.',
+    image: 'images/projects/sombetini.jpg'
+  },
+  'MY-PORTFOLIO': {
+    description: 'A personal portfolio of software projects, with skills and a way to get in touch.',
+    image: 'images/projects/portfolio.jpg'
+  },
+  'Denzel-portfolio': {
+    description: 'A modern, responsive personal portfolio website showcasing data science and development work.',
+    image: 'images/projects/portfolio.jpg'
+  },
+  'hisense-flagship-website': {
+    description: 'A flagship product website for Hisense electronics built with HTML, CSS, and JavaScript.'
+  },
+  'medicore-hms': {
+    description: 'MediCore Hospital Management System — a full-featured platform for managing hospital operations and patient records.'
+  }
+};
+
 function getRepoIcon(name) {
   return REPO_ICON[name] || REPO_ICON['default'];
 }
@@ -181,18 +214,21 @@ function renderProjects(repos) {
     const langColor = LANG_COLORS[lang] || '#64748b';
     const langIcon = LANG_ICONS[lang] || LANG_ICONS['default'];
     const repoIcon = getRepoIcon(repo.name);
+    const known = PROJECTS[repo.name];
     const rawDesc = (repo.description || '').trim();
     const desc = rawDesc.length > 12 && !/^(m|project|hospital system)$/i.test(rawDesc)
       ? rawDesc
-      : inferDescription(repo.name);
+      : (known && known.description) || inferDescription(repo.name);
     const delay = i * 80;
+    const preview = known && known.image
+      ? `<img class="project-preview" src="${known.image}" alt="">`
+      : `<div class="project-img-overlay"></div><i class="${repoIcon} project-icon-large"></i>`;
 
     return `
       <div class="col-md-6 col-lg-4 reveal-up" data-delay="${delay}">
         <div class="project-card">
           <div class="project-img-wrap">
-            <div class="project-img-overlay"></div>
-            <i class="${repoIcon} project-icon-large"></i>
+            ${preview}
           </div>
           <div class="project-body">
             <div class="project-lang">
@@ -224,12 +260,7 @@ function formatRepoName(name) {
 }
 
 function inferDescription(name) {
-  const map = {
-    'Denzel-portfolio':        'A modern, responsive personal portfolio website showcasing data science and development work.',
-    'hisense-flagship-website': 'A flagship product website for Hisense electronics built with HTML, CSS, and JavaScript.',
-    'medicore-hms':             'MediCore Hospital Management System — a full-featured platform for managing hospital operations and patient records.'
-  };
-  return map[name] || 'A project built with passion and clean code architecture.';
+  return (PROJECTS[name] && PROJECTS[name].description) || 'A project built with passion and clean code architecture.';
 }
 
 function selectRepos(repos) {
