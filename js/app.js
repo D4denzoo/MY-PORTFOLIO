@@ -174,6 +174,10 @@ const PROJECTS = {
   },
   'medicore-hms': {
     description: 'MediCore Hospital Management System — a full-featured platform for managing hospital operations and patient records.'
+  },
+  'pawslot': {
+    description: 'PawfectCare Salon is a booking desk for one pet-grooming salon in Arusha. Clients choose a service, pet, groomer, and time, and the salon accepts the visit from the desk.',
+    image: 'https://raw.githubusercontent.com/D4denzoo/pawslot/HEAD/docs/portfolio-cover.jpg'
   }
 };
 
@@ -271,10 +275,11 @@ function selectRepos(repos) {
 
 async function fetchGitHubProjects() {
   const grid = document.getElementById('projects-grid');
-  try {
-    const api = PORTFOLIO_API;
-    if (api) {
-      const apiRes = await fetch(`${api}/api/projects`, { signal: AbortSignal.timeout(4000) });
+  const api = String(PORTFOLIO_API || '').replace(/\/$/, '');
+
+  if (api) {
+    try {
+      const apiRes = await fetch(`${api}/api/projects`, { signal: AbortSignal.timeout(12000) });
       if (apiRes.ok) {
         const payload = await apiRes.json();
         const repos = payload.data || payload.projects || payload;
@@ -283,43 +288,21 @@ async function fetchGitHubProjects() {
           return;
         }
       }
+    } catch (err) {
+      console.warn('Portfolio API unavailable, asking GitHub directly:', err.message);
     }
+  }
+
+  try {
     const res = await fetch('https://api.github.com/users/D4denzoo/repos?sort=updated&per_page=30');
     if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
     const repos = await res.json();
     renderProjects(selectRepos(repos));
   } catch (err) {
-    console.warn('GitHub API fetch failed, using local data:', err.message);
-    // Fallback to known repos
-    renderProjects([
-      {
-        name: 'Denzel-portfolio',
-        description: null,
-        html_url: 'https://github.com/D4denzoo/Denzel-portfolio',
-        language: 'JavaScript',
-        stargazers_count: 0,
-        forks_count: 0,
-        updated_at: '2026-05-26T10:45:47Z'
-      },
-      {
-        name: 'medicore-hms',
-        description: 'hospital system',
-        html_url: 'https://github.com/D4denzoo/medicore-hms',
-        language: 'HTML',
-        stargazers_count: 0,
-        forks_count: 0,
-        updated_at: '2026-05-26T10:37:14Z'
-      },
-      {
-        name: 'hisense-flagship-website',
-        description: 'project',
-        html_url: 'https://github.com/D4denzoo/hisense-flagship-website',
-        language: 'HTML',
-        stargazers_count: 0,
-        forks_count: 0,
-        updated_at: '2026-05-26T11:27:37Z'
-      }
-    ]);
+    console.warn('GitHub API fetch failed:', err.message);
+    if (grid) {
+      grid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">Projects could not be loaded. Refresh the page.</p></div>';
+    }
   }
 }
 
