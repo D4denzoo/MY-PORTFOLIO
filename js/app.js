@@ -273,37 +273,73 @@ function selectRepos(repos) {
   return (filtered.length ? filtered : list).slice(0, 6);
 }
 
-async function fetchGitHubProjects() {
-  const grid = document.getElementById('projects-grid');
-  const api = String(PORTFOLIO_API || '').replace(/\/$/, '');
+function savedProjects() {
+  return Object.keys(PROJECTS)
+    .filter(name => PROJECTS[name].image && !/portfolio/i.test(name))
+    .map(name => ({
+      name,
+      description: PROJECTS[name].description,
+      html_url: `https://github.com/D4denzoo/${encodeURIComponent(name)}`,
+      language: '',
+      stargazers_count: 0,
+      forks_count: 0,
+      updated_at: new Date().toISOString()
+    }));
+}
 
+function rememberRepos(repos) {
+  try {
+    localStorage.setItem('portfolio-repos', JSON.stringify(repos));
+  } catch (err) {
+    console.warn('Could not save the project list:', err.message);
+  }
+}
+
+function showRememberedProjects() {
+  try {
+    const cached = JSON.parse(localStorage.getItem('portfolio-repos') || 'null');
+    if (Array.isArray(cached) && cached.length) {
+      renderProjects(selectRepos(cached));
+      return;
+    }
+  } catch (err) {
+    console.warn('Saved project list could not be read:', err.message);
+  }
+  renderProjects(savedProjects());
+}
+
+async function fetchGitHubProjects() {
+  try {
+    const res = await fetch('https://api.github.com/users/D4denzoo/repos?sort=updated&per_page=30');
+    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+    const repos = await res.json();
+    if (!Array.isArray(repos)) throw new Error('Unexpected GitHub response');
+    rememberRepos(repos);
+    renderProjects(selectRepos(repos));
+    return;
+  } catch (err) {
+    console.warn('GitHub API fetch failed:', err.message);
+  }
+
+  const api = String(PORTFOLIO_API || '').replace(/\/$/, '');
   if (api) {
     try {
-      const apiRes = await fetch(`${api}/api/projects`, { signal: AbortSignal.timeout(12000) });
+      const apiRes = await fetch(`${api}/api/projects`, { signal: AbortSignal.timeout(8000) });
       if (apiRes.ok) {
         const payload = await apiRes.json();
         const repos = payload.data || payload.projects || payload;
         if (Array.isArray(repos) && repos.length) {
+          rememberRepos(repos);
           renderProjects(selectRepos(repos));
           return;
         }
       }
     } catch (err) {
-      console.warn('Portfolio API unavailable, asking GitHub directly:', err.message);
+      console.warn('Portfolio API unavailable:', err.message);
     }
   }
 
-  try {
-    const res = await fetch('https://api.github.com/users/D4denzoo/repos?sort=updated&per_page=30');
-    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
-    const repos = await res.json();
-    renderProjects(selectRepos(repos));
-  } catch (err) {
-    console.warn('GitHub API fetch failed:', err.message);
-    if (grid) {
-      grid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">Projects could not be loaded. Refresh the page.</p></div>';
-    }
-  }
+  showRememberedProjects();
 }
 
 // ─── CONTACT FORM ───
